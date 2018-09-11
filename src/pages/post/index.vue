@@ -3,21 +3,9 @@
     <form @submit="formSubmit">
       <div class="properties">
 
-        <div class="sell-give">
-          <div class="prompt">属性</div>
-          <radio-group name="properties" class="radio-group" @change="radioChange">
-            <label class="radio">
-              <radio value="sell" checked="true"/> 售卖
-            </label>
-            <label class="radio">
-            <radio value="give" :checked="false"/> 赠送
-            </label>
-          </radio-group>
-        </div>
-
         <div class="category">
           <div class="prompt">类别</div>
-          <radio-group class="radio-group" name="category">
+          <radio-group class="radio-group" name="category" v-model="category">
             <label class="radio">
               <radio
                 value="textBook"
@@ -61,20 +49,16 @@
 
     <SplitLine></SplitLine>
 
-    <textarea name="title" id="title-txt" rows="1" maxlength="20" placeholder="输入商品名称,20字以内"></textarea>
+    <textarea v-model="title" name="title" id="title-txt" rows="1" maxlength="20" placeholder="输入商品名称,20字以内"></textarea>
 
     <SplitLine></SplitLine>
 
-    <textarea name="detail" id="detail-txt" placeholder="输入描述,200字以内"></textarea>
+    <textarea v-model="detail" name="detail" id="detail-txt" placeholder="输入描述,200字以内"></textarea>
 
     <SplitLine></SplitLine>
+    <addPicture @addPicture="addPicture"></addPicture>
 
-    <div class="add" @click="addImage">
-      <block :v-for="picture in pictures" :key="index" v-if="picture">
-        <img src="picture" class="add-img">
-      </block>
-      <img src="/static/images/icon/add-image.png" alt="添加图片" class="add-image">
-    </div>
+
 
     <button class="btn" formType="submit">发布</button>
 
@@ -84,34 +68,72 @@
 
 <script>
 import SplitLine from '@/components/SplitLine'
+import addPicture from '@/components/addPicture'
+import { post, showModal, showSuccess } from '@/utils/index'
 import config from '@/config'
 export default {
-  components: { SplitLine },
+  components: { SplitLine, addPicture },
   data () {
     return {
       postInfo: {},
-      pictures: []
+      pictures: [],
+      detail: '',
+      title: '',
+      price: '',
+      category: 'textBook'
     }
   },
   methods: {
-    addImage () {
-      wx.chooseImage({
-        success: function (res) {
-          console.log(res.tempFilePaths)
-          this.pictures = res.tempFilePaths
-        }
-      })
-    },
     radioChange (e) {
       console.log(e)
     },
-    formSubmit (e) {
+    async formSubmit (e) {
       var formInfo = e.target.value
-      this.postInfo = {
-        formInfo,
-        image: this.pictures.join(',')
+
+      // check not null
+      if (!formInfo.category) {
+        showModal('信息不完全', '请选择商品类别')
       }
-      console.log(e)
+      if (!formInfo.price) {
+        showModal('信息不完全', '请填写商品价格')
+      }
+      if (!formInfo.title) {
+        showModal('信息不完全', '请填写标题')
+      }
+      if (!formInfo.detail) {
+        showModal('信息不完全', '请填写详细描述')
+      }
+
+      const userinfo = wx.getStorageSync('userinfo')
+      Object.assign(this.postInfo, formInfo, {
+        image: this.pictures.join(','),
+        nickName: userinfo.nickName,
+        avatarUrl: userinfo.avatarUrl,
+        openId: userinfo.openId
+      })
+
+      console.log('succeed in post second-hand deel information.')
+      console.log('postInfo', this.postInfo)
+
+      // post merchandise information to server
+      try {
+        await post(config.host + '/weapp/post', this.postInfo)
+        showSuccess('发布成功')
+        this.formReset()
+      } catch (e) {
+        console.log(e)
+        showModal('发布失败', '请检查您的网络状态')
+      }
+    },
+    addPicture (value) {
+      this.pictures = value
+    },
+    formReset () {
+      this.price = ''
+      this.title = ''
+      this.detail = ''
+      this.category = 'textBook'
+      console.log('reset form and picture')
     }
   }
 }
@@ -153,18 +175,5 @@ export default {
   padding: 5px 0 5px 10px;
   font-size: 15px;
   width: 100%;
-}
-.add {
-  height: 100px;
-  width: 100px;
-  background: #f2f2f2;
-  margin: 10px;
-  line-height: 100px;
-  text-align: center;
-}
-
-.add-image {
-  width: 20px;
-  height: 20px;
 }
 </style>
