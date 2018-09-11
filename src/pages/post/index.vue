@@ -69,7 +69,7 @@
 <script>
 import SplitLine from '@/components/SplitLine'
 import addPicture from '@/components/addPicture'
-import { post, showModal, showSuccess } from '@/utils/index'
+import { post, showModal, showSuccess, formatTime } from '@/utils/index'
 import config from '@/config'
 export default {
   components: { SplitLine, addPicture },
@@ -104,12 +104,15 @@ export default {
         showModal('信息不完全', '请填写详细描述')
       }
 
+      const time = formatTime(new Date())
+
       const userinfo = wx.getStorageSync('userinfo')
       Object.assign(this.postInfo, formInfo, {
         image: this.pictures.join(','),
         nickName: userinfo.nickName,
         avatarUrl: userinfo.avatarUrl,
-        openId: userinfo.openId
+        openId: userinfo.openId,
+        postTime: time
       })
 
       console.log('succeed in post second-hand deel information.')
