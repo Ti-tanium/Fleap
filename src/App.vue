@@ -1,12 +1,9 @@
 <script>
+import qcloud from 'wafer2-client-sdk'
+import config from './config'
 export default {
   created () {
-    // 调用API从本地缓存中获取数据
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    console.log('app created and cache logs by setStorageSync')
+    qcloud.setLoginUrl(config.loginUrl)
   }
 }
 </script>
@@ -21,11 +18,18 @@ export default {
   padding: 200rpx 0;
   box-sizing: border-box;
 }
-/* this rule will be remove */
-* {
-  transition: width 2s;
-  -moz-transition: width 2s;
-  -webkit-transition: width 2s;
-  -o-transition: width 2s;
+.btn {
+  color: white;
+  background-color: #ea5419;
+  margin-top: 30rpx;
+  width: 90%;
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 32rpx;
+}
+.more-img {
+  width: 15px;
+  height: 15px;
+  margin-left: 400rpx;
 }
 </style>
