@@ -7,6 +7,7 @@ create table merchandise(
   detail varchar(400) not null,
   price float not null,
   category varchar(20) not null,
+  postTime varchar(40),
   image varchar(1000),
   viewCount int ,
   sold Boolean,

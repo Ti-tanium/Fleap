@@ -10,7 +10,8 @@ module.exports = async ctx => {
         openId,
         nickName,
         avatarUrl,
-        major
+        major,
+        postTime
     } = ctx.request.body
     console.log(
         category,
@@ -21,9 +22,11 @@ module.exports = async ctx => {
         openId,
         nickName,
         avatarUrl,
-        major
+        major,
+        postTime
     )
     const sold = false
+    let viewCount = 0
     try {
         await mysql('merchandise').insert({
             category,
@@ -35,7 +38,9 @@ module.exports = async ctx => {
             nickName,
             avatarUrl,
             major,
-            sold
+            sold,
+            postTime,
+            viewCount
         })
         ctx.state.data = {
             msg: 'success'
