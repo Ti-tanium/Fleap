@@ -32,4 +32,9 @@ export default {
   height: 15px;
   margin-left: 400rpx;
 }
+
+.icon {
+  width: 15px;
+  height: 15px;
+}
 </style>
