@@ -36,4 +36,6 @@ router.post('/message', controllers.message.post)
 
 router.get('/test', controllers.test)
 
+router.post('/post', controllers.post)
+
 module.exports = router
