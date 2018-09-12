@@ -40,4 +40,6 @@ router.post('/post', controllers.post)
 
 router.get('/postlist', controllers.postlist)
 
+router.get('/postdetail', controllers.postdetail)
+
 module.exports = router
