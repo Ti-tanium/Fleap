@@ -4,7 +4,7 @@
       <div class="properties">
 
         <div class="category">
-          <div class="prompt">类别</div>
+          <div class="price-prompt">类别</div>
           <radio-group class="radio-group" name="category" v-model="category">
             <label class="radio">
               <radio
@@ -43,7 +43,7 @@
       </div>
 
     <div class="price">
-      <div class="prompt">价格(元):</div>
+      <div class="price-prompt">价格(元):</div>
       <input name="price" type="text" v-model="price" placeholder="0.00">
     </div>
 
@@ -93,14 +93,11 @@ export default {
       // check not null
       if (!formInfo.category) {
         showModal('信息不完全', '请选择商品类别')
-      }
-      if (!formInfo.price) {
+      } else if (!formInfo.price) {
         showModal('信息不完全', '请填写商品价格')
-      }
-      if (!formInfo.title) {
+      } else if (!formInfo.title) {
         showModal('信息不完全', '请填写标题')
-      }
-      if (!formInfo.detail) {
+      } else if (!formInfo.detail) {
         showModal('信息不完全', '请填写详细描述')
       }
 
@@ -158,7 +155,7 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.prompt {
+.price-prompt {
   font-size: 15px;
   color: #666;
   margin-left: 10px;
