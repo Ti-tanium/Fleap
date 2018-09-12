@@ -9,7 +9,7 @@
         <div class="nickName">{{postList.nickName}}</div>
         <div class="title">{{postList.title}}</div>
         <div class="image-container">
-          <img :src="image" v-for="image in images" :key="index" class="item-image">
+          <img :src="image" v-for="image in images" :key="index" class="item-image" @click.stop="previewImage(image,index)">
         </div>
         <div class="footer">
           <div class="postTime">{{postList.postTime}}</div>
@@ -41,6 +41,14 @@ export default {
   computed: {
     postDetailUrl () {
       return '/pages/postDetail/main?id=' + this.postList.id
+    }
+  },
+  methods: {
+    previewImage (image, index) {
+      wx.previewImage({
+        urls: this.images, // 需要预览的图片链接列表,
+        current: this.images[index]
+      })
     }
   }
 }
