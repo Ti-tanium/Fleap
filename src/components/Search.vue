@@ -22,7 +22,6 @@ export default {
   background: #fff;
   padding: 4px;
   border-radius: 7px;
-  font-size: 18px;
   height: 20px;
   line-height: 20px;
 }
