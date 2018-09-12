@@ -1,5 +1,10 @@
 {
-  "pages": ["pages/index/main", "pages/profile/main", "pages/post/main"],
+  "pages": [
+    "pages/index/main",
+    "pages/profile/main",
+    "pages/post/main",
+    "pages/postDetail/main"
+  ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#1296db",
