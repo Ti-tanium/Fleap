@@ -37,4 +37,10 @@ export default {
   width: 15px;
   height: 15px;
 }
+.prompt {
+  color: #666;
+  font-size: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 </style>
