@@ -49,8 +49,19 @@ export default {
       })
 
       this.postList = postList.data.list
+      wx.hideLoading()
+      wx.stopPullDownRefresh()
       console.log(this.postList.data.list)
     }
+  },
+  onPullDownRefresh () {
+    wx.showLoading({
+      title: '加载中...', // 提示的内容,
+      mask: true, // 显示透明蒙层，防止触摸穿透,
+      success: res => {
+        this.getPostList()
+      }
+    })
   }
 }
 </script>
