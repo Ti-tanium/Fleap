@@ -1,4 +1,5 @@
 <template>
+<a :href="postDetailUrl">
   <div class="PostCard-container">
     <div class="body">
       <div class="avatar">
@@ -21,10 +22,12 @@
     </div>
     <SplitLine></SplitLine>
   </div>
+</a>
 </template>
 
 <script>
 import SplitLine from '@/components/SplitLine'
+
 export default {
   components: {
     SplitLine
@@ -33,6 +36,11 @@ export default {
   data () {
     return {
       images: this.postList.image.split(',')
+    }
+  },
+  computed: {
+    postDetailUrl () {
+      return '/pages/postDetail/main?id=' + this.postList.id
     }
   }
 }
