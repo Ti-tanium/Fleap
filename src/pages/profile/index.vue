@@ -1,7 +1,7 @@
 <template>
   <div class="profile-container">
 
-    <div class="head"  open-type="getUserInfo" @click="doLogin">
+    <div class="head"  >
       <img :src="userinfo.avatarUrl" class="avatar">
       <div class="nickName">{{userinfo.nickName}}</div>
       <img src="/static/images/icon/more.png" alt="更多" class="more-img">
@@ -23,6 +23,8 @@
         <div class="btn-text">设置</div>
       </div>
 
+      <button open-type="getUserInfo" @click="doLogin" class="btn">登录</button>
+
     </div>
   </div>
 </template>
@@ -35,14 +37,14 @@ export default {
     return {
       userinfo: {
         avatarUrl: '/static/images/alt-avatar.png',
-        nickName: '点击登录'
+        nickName: '请先登录'
       }
     }
   },
   methods: {
     doLogin () {
       const session = qcloud.Session.get()
-      console.log(session)
+      console.log('qcloud session:', session)
       if (session) {
         // 第二次登录
         // 或者本地已经有登录态
@@ -62,12 +64,13 @@ export default {
         })
       } else {
         // 首次登录
+        console.log('first time log in')
         qcloud.login({
           success: res => {
+            console.log('first time login success, res:', res)
             this.userinfo = res
             this.logged = true
             wx.setStorageSync('userinfo', res)
-            console.log(res)
             showSuccess('登录成功')
           },
           fail: err => {
