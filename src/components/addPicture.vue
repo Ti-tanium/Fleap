@@ -1,6 +1,6 @@
 <template>
   <div class="addPicture-container">
-    <div class="frame" v-for="picture in pictures" :key="index">
+    <div class="frame" v-for="picture in localPictures" :key="index">
       <img :src="picture" class="picture" mode="aspectFill">
     </div>
     <div class="add-frame" @click="chooseImage" :hidden="hideAdd">
@@ -14,15 +14,19 @@ export default {
   data () {
     return {
       hideAdd: false,
-      pictures: [],
+      localPictures: [],
       count: 0
     }
   },
   methods: {
     chooseImage () {
       wx.chooseImage({
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
         count: '9', // 最多可以选择的图片张数,
+        async: false,
         success: res => {
+          // 本地图片地址
           let pictures = res.tempFilePaths
           this.count = this.count + pictures.length
           if (this.count >= 9) {
@@ -30,13 +34,16 @@ export default {
           } else {
             this.hideAdd = false
           }
-          this.pictures = this.pictures.concat(pictures)
-
+          wx.showLoading({
+            title: '正在上传', // 提示的内容,
+            mask: true // 显示透明蒙层，防止触摸穿透,
+          })
+          this.localPictures = this.localPictures.concat(pictures)
           // 将图片数据发送给调用组件
-          this.$emit('addPicture', this.pictures)
+          this.$emit('addPicture', this.localPictures)
+          wx.hideLoading()
         },
-        fail: () => {},
-        complete: () => {}
+        fail: () => {}
       })
     }
   }
