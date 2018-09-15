@@ -20,7 +20,7 @@ export default {
 }
 .btn {
   color: white;
-  background-color: #ea5419;
+  background-color: #1296db;
   margin-top: 30rpx;
   width: 90%;
   height: 70rpx;
