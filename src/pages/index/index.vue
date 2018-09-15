@@ -44,7 +44,7 @@ export default {
   methods: {
     async getPostList () {
       const postList = await get(config.host + '/weapp/postlist', {
-        category: 'textBook',
+        category: 'all',
         Free: ''
       })
 
