@@ -7,8 +7,8 @@
 		"minified": true,
 		"newFeature": true
 	},
-	"miniprogramRoot": "./dist/",
-	"qcloudRoot": "./server/",
+	"miniprogramRoot": "dist/",
+	"qcloudRoot": "server/",
 	"compileType": "miniprogram",
 	"appid": "wx77ceeae018c3f9bc",
 	"projectname": "ebook",
@@ -30,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -47,7 +47,14 @@
 				{
 					"id": -1,
 					"name": "index",
-					"pathName": "pages/index/main"
+					"pathName": "pages/index/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "postDetail",
+					"pathName": "pages/postDetail/main",
+					"query": "id=1"
 				}
 			]
 		}
