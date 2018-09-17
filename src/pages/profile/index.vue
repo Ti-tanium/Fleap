@@ -1,9 +1,17 @@
 <template>
   <div class="profile-container">
 
-    <div class="head"  >
+    <div class="head">
       <img :src="userinfo.avatarUrl" class="avatar">
       <div class="nickName">{{userinfo.nickName}}</div>
+      <!-- <open-data
+        type="userAvatarUrl"
+        class="avatar">
+      </open-data>
+      <open-data
+        type="userNickName"
+        class="nickName">
+      </open-data> -->
       <img src="/static/images/icon/more.png" alt="更多" class="more-img">
     </div>
     <div class="options">
@@ -23,8 +31,14 @@
         <div class="btn-text">设置</div>
       </div>
 
-      <button open-type="getUserInfo" @click="doLogin" class="btn">登录</button>
-
+      <button
+        class="btn"
+        open-type="getUserInfo"
+        @getuserinfo="getUserInfo"
+        lang="zh_CN"
+        >
+        获取用户信息
+      </button>
     </div>
   </div>
 </template>
@@ -42,7 +56,11 @@ export default {
     }
   },
   methods: {
-    doLogin () {
+    getUserInfo (e) {
+      console.log(e)
+      this.userinfo = e.target.userInfo
+      wx.setStorageSync('userinfo', this.userinfo)
+
       const session = qcloud.Session.get()
       console.log('qcloud session:', session)
       if (session) {
@@ -75,7 +93,7 @@ export default {
           },
           fail: err => {
             console.error(err)
-            showModal('登录错误', '请检查网络连接状态')
+            // showModal('登录错误', '请检查网络连接状态')
           }
         })
       }
