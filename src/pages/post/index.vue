@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import WXP from 'minapp-api-promise'
 import SplitLine from '@/components/SplitLine'
 import addPicture from '@/components/addPicture'
 import { post, showModal, showSuccess, formatTime } from '@/utils/index'
@@ -101,34 +102,41 @@ export default {
       } else if (!formInfo.detail) {
         showModal('信息不完全', '请填写详细描述')
       }
-
+      let uploadPictures = []
+      // let j = 0
       for (let i = 0; i < this.pictures.length; i++) {
-        wx.uploadFile({
+        await wx.uploadFile({
           url: config.uploadUrl, // 开发者服务器 url
-          filePath: this.pictures[0], // 要上传文件资源的路径
-          name: 'name', // 文件对应的 key , 开发者在服务器端通过这个 key 可以获取到文件二进制内容
-          success: res => {
-            console.log('uploadFile success res:', res)
+          filePath: this.pictures[i], // 要上传文件资源的路径
+          name: 'file', // 文件对应的 key , 开发者在服务器端通过这个 key 可以获取到文件二进制内容
+          success: async res => {
+            res = JSON.parse(res.data)
+            console.log('uploadFile success imgUrl:', res.data.imgUrl)
+            uploadPictures = [...uploadPictures, res.data.imgUrl]
+            // 获得所有上传的图片路径之后 再一并提交服务器
+            console.log('i=', i, 'length=', this.pictures.length - 1)
+            if (uploadPictures.length === this.pictures.length) {
+              Object.assign(this.postInfo, formInfo, {
+                image: uploadPictures.join(','),
+                nickName: userinfo.nickName,
+                avatarUrl: userinfo.avatarUrl,
+                openId: userinfo.openId,
+                postTime: time
+              })
 
-            Object.assign(this.postInfo, formInfo, {
-              image: this.pictures.join(','),
-              nickName: userinfo.nickName,
-              avatarUrl: userinfo.avatarUrl,
-              openId: userinfo.openId,
-              postTime: time
-            })
+              console.log('succeed in post second-hand deel information.')
+              console.log('postInfo', this.postInfo)
 
-            console.log('succeed in post second-hand deel information.')
-            console.log('postInfo', this.postInfo)
-
-            // post merchandise information to server
-            try {
-              post(config.host + '/weapp/post', this.postInfo)
-              showSuccess('发布成功')
-              this.formReset()
-            } catch (e) {
-              console.log(e)
-              showModal('发布失败', '请检查您的网络状态')
+              // post merchandise information to server
+              try {
+                await post(config.host + '/weapp/post', this.postInfo)
+                // j++
+                showSuccess('发布成功')
+                this.formReset()
+              } catch (e) {
+                console.log(e)
+                showModal('发布失败', '请检查您的网络状态')
+              }
             }
           },
           fail: () => {},
