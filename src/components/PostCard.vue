@@ -72,6 +72,10 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: #888;
 }
 .viewCount {
   display: flex;
@@ -83,6 +87,7 @@ export default {
   margin-left: 5px;
 }
 .content {
+  width: 612rpx;
   display: flex;
   flex-direction: column;
 }
@@ -110,11 +115,6 @@ export default {
   margin-right: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
-}
-.footer {
-  margin-top: 10px;
-  margin-bottom: 5px;
-  font-size: 13px;
-  color: #888;
+  background: #f2f2f2;
 }
 </style>
