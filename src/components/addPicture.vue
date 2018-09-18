@@ -34,14 +34,9 @@ export default {
           } else {
             this.hideAdd = false
           }
-          wx.showLoading({
-            title: '正在上传', // 提示的内容,
-            mask: true // 显示透明蒙层，防止触摸穿透,
-          })
           this.localPictures = this.localPictures.concat(pictures)
           // 将图片数据发送给调用组件
           this.$emit('addPicture', this.localPictures)
-          wx.hideLoading()
         },
         fail: () => {}
       })
