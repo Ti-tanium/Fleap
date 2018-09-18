@@ -58,8 +58,6 @@
     <SplitLine></SplitLine>
     <addPicture @addPicture="addPicture"></addPicture>
 
-
-
     <button class="btn" formType="submit">发布</button>
 
     </form>
@@ -67,7 +65,6 @@
 </template>
 
 <script>
-import WXP from 'minapp-api-promise'
 import SplitLine from '@/components/SplitLine'
 import addPicture from '@/components/addPicture'
 import { post, showModal, showSuccess, formatTime } from '@/utils/index'
@@ -81,7 +78,8 @@ export default {
       detail: '',
       title: '',
       price: '',
-      category: 'textBook'
+      category: 'textBook',
+      uploadPictures: []
     }
   },
   methods: {
@@ -102,8 +100,6 @@ export default {
       } else if (!formInfo.detail) {
         showModal('信息不完全', '请填写详细描述')
       }
-      let uploadPictures = []
-      // let j = 0
       for (let i = 0; i < this.pictures.length; i++) {
         await wx.uploadFile({
           url: config.uploadUrl, // 开发者服务器 url
@@ -112,25 +108,29 @@ export default {
           success: async res => {
             res = JSON.parse(res.data)
             console.log('uploadFile success imgUrl:', res.data.imgUrl)
-            uploadPictures = [...uploadPictures, res.data.imgUrl]
+            this.uploadPictures = [...this.uploadPictures, res.data.imgUrl]
             // 获得所有上传的图片路径之后 再一并提交服务器
-            console.log('i=', i, 'length=', this.pictures.length - 1)
-            if (uploadPictures.length === this.pictures.length) {
+            console.log(
+              'uploadLength=',
+              this.uploadPictures.length,
+              'localLength=',
+              this.pictures.length
+            )
+            if (this.uploadPictures.length === this.pictures.length) {
               Object.assign(this.postInfo, formInfo, {
-                image: uploadPictures.join(','),
+                image: this.uploadPictures.join(','),
                 nickName: userinfo.nickName,
                 avatarUrl: userinfo.avatarUrl,
                 openId: userinfo.openId,
                 postTime: time
               })
-
               console.log('succeed in post second-hand deel information.')
               console.log('postInfo', this.postInfo)
 
               // post merchandise information to server
               try {
                 await post(config.host + '/weapp/post', this.postInfo)
-                // j++
+                this.uploadPictures = []
                 showSuccess('发布成功')
                 this.formReset()
               } catch (e) {
