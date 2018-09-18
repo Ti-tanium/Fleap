@@ -16,10 +16,13 @@
     </div>
     <div class="options">
 
-      <div class="tab-btn">
+      <a href="/pages/myFavorite/main">
+        <div class="tab-btn">
         <img src="/static/images/icon/post.png" class="icon-img">
         <div class="btn-text">我的发布</div>
       </div>
+
+      </a>
 
       <div class='tab-btn'>
         <img src="/static/images/icon/favorite.png" class="icon-img">

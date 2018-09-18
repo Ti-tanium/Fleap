@@ -3,7 +3,8 @@
     "pages/index/main",
     "pages/profile/main",
     "pages/post/main",
-    "pages/postDetail/main"
+    "pages/postDetail/main",
+    "pages/myFavorite/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
