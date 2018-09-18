@@ -9,7 +9,7 @@
         <div class="nickName">{{postList.nickName}}</div>
         <div class="title">{{postList.title}}</div>
         <div class="image-container">
-          <img :src="image" v-for="image in images" :key="index" class="item-image" @click.stop="previewImage(image,index)">
+          <img :src="image" v-if="image" v-for="image in images" :key="index" class="item-image" @click.stop="previewImage(image,index)">
         </div>
         <div class="footer">
           <div class="postTime">{{postList.postTime}}</div>
