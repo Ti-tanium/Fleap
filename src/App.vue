@@ -39,7 +39,7 @@ export default {
 }
 .prompt {
   color: #666;
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
