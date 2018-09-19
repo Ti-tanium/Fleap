@@ -2,15 +2,20 @@
   <div class="postDetail-container">
 
     <div class="head">
-      <div class="title">{{postDetail.title}}</div>
-      <div class="postTime">{{postDetail.postTime}}</div>
-      <div class="viewCount">浏览{{postDetail.viewCount}}人</div>
-      <div class="favorite">
+      <div class="headtitle-favorite">
+        <div class="title">{{postDetail.title}}</div>
+        <div class="favorite">
+          <img src="/static/images/icon/favorite.png" class="favorite-img">
+          <div class="favorite-txt">收藏</div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="postTime">{{postDetail.postTime}}</div>
+        <div class="viewCount">浏览{{postDetail.viewCount}}人</div>
       </div>
     </div>
 
     <div class="content">
-
       <div class="prompt">图片详情</div>
       <div class="img-container">
         <img :src="picture" class="item-image" v-for="picture in pictures" :key="index" mode="aspectFill" @click="previewImage(pictrue,index)">
@@ -21,10 +26,15 @@
     </div>
 
     <div class="contact">
-      <div class="name"></div>
-      <div class="weChatId"></div>
-      <div class="QQId"></div>
-      <div class="phoneNumber"></div>
+      <div class="QQId" v-if="postDetail.QQId">
+        <div class="prompt">QQ:</div>
+        <div class="QQId-txt">{{postDetail.QQId}}</div>
+      </div>
+
+      <div class="phoneNumber" v-if="postDetail.phoneNumber">
+        <div class="prompt">电话:</div>
+        <div class="phoneNumber-txt">{{postDetail.phoneNumber}}</div>
+      </div>
     </div>
 
     <div class="message">
@@ -73,6 +83,39 @@ export default {
   font-size: 15px;
   background: #f2f2f2;
 }
+.favorite-img {
+  width: 18px;
+  height: 18px;
+}
+.favorite-txt {
+  color: #666;
+  font-size: 12px;
+  margin-left: 5px;
+}
+.headtitle-favorite {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+.favorite {
+  display: flex;
+  flex-direction: row;
+  line-height: 18px;
+  height: 18px;
+}
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: #888;
+}
 .head {
   background: #fff;
   padding: 10rpx 40rpx;
@@ -82,6 +125,7 @@ export default {
   background: #fff;
   padding: 10rpx 40rpx;
   margin: 2px 0;
+  width: 100%;
 }
 .contact {
   background: #fff;
@@ -94,6 +138,7 @@ export default {
   margin-right: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
+  background: #f2f2f2;
 }
 .img-container {
   display: flex;
