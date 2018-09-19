@@ -62,6 +62,15 @@ export default {
         this.getPostList()
       }
     })
+  },
+  onShareAppMessage () {
+    return {
+      title: '易书',
+      path: '/pages/index/main',
+      success: res => {},
+      fail: () => {},
+      complete: () => {}
+    }
   }
 }
 </script>

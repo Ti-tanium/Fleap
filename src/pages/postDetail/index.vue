@@ -58,6 +58,15 @@ export default {
     this.itemId = this.$root.$mp.query.id
     this.getPostDetail()
   },
+  onShareAppMessage () {
+    return {
+      title: this.postDetail.title,
+      path: '/pages/postDetail/main',
+      success: res => {},
+      fail: () => {},
+      complete: () => {}
+    }
+  },
   methods: {
     async getPostDetail () {
       const postDetail = await get(config.host + '/weapp/postdetail', {
