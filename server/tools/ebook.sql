@@ -11,5 +11,12 @@ create table merchandise(
   image varchar(1000),
   viewCount int ,
   sold Boolean,
-  major varchar(40)
 );
+
+create table user(
+  openId varchar(60) primary key,
+  favorites varchar(300),
+  QQId varchar(90),
+  phoneNumber varchar(20),
+  major varchar(40)
+)
