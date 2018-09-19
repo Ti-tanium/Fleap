@@ -2,15 +2,22 @@ const CONF = {
     port: '5757',
     rootPathname: '',
 
-    serverHost: 'localhost',
-    tunnelServerUrl: '',
-    tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
-    // 腾讯云相关配置可以查看云 API 秘钥控制台：https://console.cloud.tencent.com/capi
-    qcloudAppId: '1257251040',
-    qcloudSecretId: 'AKIDeEwbzkJ1f8lK0cCPgyBIPQHzWzaQmtli',
-    qcloudSecretKey: 'YDkEhFpJhz7AylQ77HmLn9bwLPQJ22wK',
-    wxMessageToken: 'weixinmsgtoken',
-    networkTimeout: 30000,
+    // serverHost: '',
+    // tunnelServerUrl: '',
+    // tunnelSignatureKey: '',
+    // qcloudAppId: '',
+    // qcloudSecretId: '',
+    // qcloudSecretKey: '',
+
+    // serverHost: 'localhost',
+    // tunnelServerUrl: '',
+    // tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
+    // // 腾讯云相关配置可以查看云 API 秘钥控制台：https://console.cloud.tencent.com/capi
+    // qcloudAppId: '1257251040',
+    // qcloudSecretId: 'AKIDeEwbzkJ1f8lK0cCPgyBIPQHzWzaQmtli',
+    // qcloudSecretKey: 'YDkEhFpJhz7AylQ77HmLn9bwLPQJ22wK',
+    // wxMessageToken: 'weixinmsgtoken',
+    // networkTimeout: 30000,
 
     // 微信小程序 App ID
     appId: 'wx77ceeae018c3f9bc',
@@ -31,8 +38,8 @@ const CONF = {
         port: 3306,
         user: 'root',
         db: 'cAuth',
-        // pass: 'wx77ceeae018c3f9bc',
-        pass: '1158976264',
+        pass: 'wx77ceeae018c3f9bc',
+        // pass: '1158976264',
         char: 'utf8mb4'
     },
 

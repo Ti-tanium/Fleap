@@ -51,10 +51,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 3,
 					"name": "postDetail",
 					"pathName": "pages/postDetail/main",
-					"query": "id=1"
+					"query": "id=79"
 				}
 			]
 		}
