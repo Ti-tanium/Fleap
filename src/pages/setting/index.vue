@@ -1,6 +1,6 @@
 <template>
-  <div class="profile-container">
-    个人资料
+  <div class="setting-container">
+    setting
   </div>
 </template>
 

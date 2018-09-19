@@ -1,10 +1,13 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/profile/main",
+    "pages/me/main",
     "pages/post/main",
     "pages/postDetail/main",
-    "pages/myFavorite/main"
+    "pages/myFavorite/main",
+    "pages/myPost/main",
+    "pages/profile/main",
+    "pages/setting/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -28,7 +31,7 @@
         "selectedIconPath": "static/images/icon/add-active.png"
       },
       {
-        "pagePath": "pages/profile/main",
+        "pagePath": "pages/me/main",
         "text": "个人中心",
         "iconPath": "static/images/icon/me.png",
         "selectedIconPath": "static/images/icon/me-active.png"
