@@ -92,13 +92,13 @@ export default {
   flex-direction: column;
 }
 .avatar {
-  width: 50px;
-  height: 50px;
+  width: 100rpx;
+  height: 100rpx;
   margin-right: 10px;
 }
 .avatar-img {
-  width: 100%;
-  height: 100%;
+  width: 100rpx;
+  height: 100rpx;
   border-radius: 50%;
 }
 .nickName {
