@@ -20,6 +20,10 @@
       <div class="img-container">
         <img :src="picture" class="item-image" v-for="picture in pictures" :key="index" mode="aspectFill" @click="previewImage(pictrue,index)">
       </div>
+      <div class="price-container">
+        <div class="prompt">价格(元):</div>
+        <div class="price">{{postDetail.price}}</div>
+      </div>
       <div class="prompt">详细描述</div>
       <div class="detail">{{postDetail.detail}}</div>
       <div class="prompt">类型标签</div>
@@ -91,6 +95,15 @@ export default {
 .postDetail-container {
   font-size: 15px;
   background: #f2f2f2;
+}
+.price-container {
+  display: flex;
+  flex-direction: row;
+}
+.price {
+  line-height: 36px;
+  height: 36px;
+  margin-left: 5px;
 }
 .favorite-img {
   width: 18px;
