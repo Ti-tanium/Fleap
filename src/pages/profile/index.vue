@@ -16,7 +16,7 @@
     </div>
     <div class="options">
 
-      <a href="/pages/myFavorite/main">
+      <a href="/pages/myPost/main">
         <div class="tab-btn">
         <img src="/static/images/icon/post.png" class="icon-img">
         <div class="btn-text">我的发布</div>
