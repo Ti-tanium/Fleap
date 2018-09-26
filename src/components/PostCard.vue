@@ -6,7 +6,10 @@
         <img :src="postList.avatarUrl" class="avatar-img">
       </div>
       <div class="content">
-        <div class="nickName">{{postList.nickName}}</div>
+        <div class="header">
+          <div class="nickName">{{postList.nickName}}</div>
+          <div class="price">¥{{postList.price}}</div>
+        </div>
         <div class="title">{{postList.title}}</div>
         <div class="image-container">
           <img :src="image" v-if="image" v-for="image in images" :key="index" class="item-image" @click.stop="previewImage(image,index)">
@@ -104,6 +107,14 @@ export default {
 .nickName {
   color: rgb(11, 63, 175);
   margin-bottom: 5px;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.price {
+  color: #333;
 }
 .image-container {
   display: flex;
