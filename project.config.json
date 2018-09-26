@@ -2,7 +2,7 @@
 	"description": "项目配置文件。",
 	"setting": {
 		"urlCheck": false,
-		"es6": false,
+		"es6": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true
@@ -30,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
@@ -55,6 +55,11 @@
 					"name": "postDetail",
 					"pathName": "pages/postDetail/main",
 					"query": "id=20"
+				},
+				{
+					"id": -1,
+					"name": "myFavorite",
+					"pathName": "pages/myFavorite/main"
 				}
 			]
 		}
