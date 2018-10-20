@@ -16,29 +16,24 @@
     </div>
 
     <div class="content">
-      <div class="prompt">图片详情</div>
-      <div class="img-container">
-        <img :src="picture" class="item-image" v-for="picture in pictures" :key="index" mode="aspectFill" @click="previewImage(pictrue,index)">
+
+
+      <div class="image-cell">
+        <div class="icon-container">
+          <img src="/static/images/icon/post.png" class="icon">
+        </div>
+        <div class="img-container">
+          <img :src="picture" class="item-image" v-for="picture in pictures" :key="index" mode="aspectFill" @click="previewImage(pictrue,index)">
+        </div>
       </div>
-      <div class="price-container">
-        <div class="prompt">价格(元):</div>
-        <div class="price">{{postDetail.price}}</div>
-      </div>
-      <div class="prompt">详细描述</div>
-      <div class="detail">{{postDetail.detail}}</div>
-      <div class="prompt">类型标签</div>
+      <displayCell iconUrl="/static/images/icon/price.png" :content="postDetail.price"></displayCell>
+      <displayCell iconUrl="/static/images/icon/detail.png" :content="postDetail.detail"></displayCell>
+      <displayCell iconUrl="/static/images/icon/tag.png" content="#生活用品" :border="true"></displayCell>
     </div>
 
     <div class="contact">
-      <div class="QQId" v-if="postDetail.QQId">
-        <div class="prompt">QQ:</div>
-        <div class="QQId-txt">{{postDetail.QQId}}</div>
-      </div>
-
-      <div class="phoneNumber" v-if="postDetail.phoneNumber">
-        <div class="prompt">电话:</div>
-        <div class="phoneNumber-txt">{{postDetail.phoneNumber}}</div>
-      </div>
+      <displayCell iconUrl="/static/images/icon/qq.png" :content="postDetail.QQId" v-if="postDetail.QQId"></displayCell>
+      <displayCell iconUrl="/static/images/icon/" :content="postDetail.phoneNumber" v-if="postDetail.phoneNumber"></displayCell>
     </div>
 
     <div class="message">
@@ -50,6 +45,7 @@
 <script>
 import { get } from '@/utils/index'
 import config from '@/config'
+import displayCell from '@/components/displayCell'
 export default {
   data () {
     return {
@@ -57,6 +53,9 @@ export default {
       postDetail: {},
       pictures: []
     }
+  },
+  components: {
+    displayCell
   },
   mounted () {
     this.itemId = this.$root.$mp.query.id
@@ -97,6 +96,10 @@ export default {
   background: #f2f2f2;
 }
 .price-container {
+  display: flex;
+  flex-direction: row;
+}
+.image-cell {
   display: flex;
   flex-direction: row;
 }
@@ -163,6 +166,7 @@ export default {
   background: #f2f2f2;
 }
 .img-container {
+  margin-left: 10rpx;
   display: flex;
   flex-wrap: wrap;
 }
