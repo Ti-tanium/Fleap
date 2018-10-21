@@ -2,9 +2,15 @@
   <div class="profile-container">
 
     <div class="profile-header">
-      <img :src="userinfo.avatarUrl" class="profile-background-image" mode="aspectFill">
-      <img class="profile-avatar" :src="userinfo.avatarUrl">
-      <div class="profile-nickName">{{userinfo.nickName}}</div>
+      <div class="profile-background-image" mode="aspectFill">
+        <open-data type="userAvatarUrl"></open-data>
+      </div>
+      <div class="profile-avatar">
+        <open-data type="userAvatarUrl"></open-data>
+      </div>
+      <div class="profile-nickName">
+        <open-data type="userNickName"></open-data>
+      </div>
     </div>
 
 
@@ -38,20 +44,29 @@
           placeholder="请输入专业全称"
         />
       </van-cell-group>
-      <button class="btn" formType="submit">保存修改</button>
+      <button
+        class="btn"
+        formType="submit"
+        open-type="getUserInfo"
+        lang="zh_CN"
+        >
+        保存信息
+      </button>
       </form>
     </div>
+
     <div class="profile-footer">
       <SplitLine></SplitLine>
-      注：完善联系方式以方便买家联系，专业信息用于个性化推荐，为您提供更好的服务。
+      注：完善联系方式以方便买家联系，专业信息用于个性化推荐，为您提供更好的服务，保存信息的同时会获取用户标识、头像、昵称等公开信息。
     </div>
 
   </div>
 </template>
 
 <script>
-import { numberValidate, showSuccess } from '@/utils/index.js'
+import { numberValidate, showSuccess, showModal } from '@/utils/index.js'
 import SplitLine from '@/components/SplitLine'
+import qcloud from 'wafer2-client-sdk'
 export default {
   components: {
     SplitLine
@@ -83,6 +98,51 @@ export default {
   },
   computed: {},
   methods: {
+    getUserInfo (e) {
+      console.log(e)
+      const session = qcloud.Session.get()
+      console.log('qcloud session:', session)
+      if (session) {
+        // 第二次登录
+        // 或者本地已经有登录态
+        // 可使用本函数更新登录态
+        qcloud.loginWithCode({
+          success: res => {
+            let userinfo = wx.getStorageSync('userinfo')
+            if (userinfo) {
+              userinfo = Object.assign(userinfo, res)
+            } else {
+              userinfo = res
+            }
+            wx.setStorageSync('userinfo', userinfo)
+            console.log(this.userinfo)
+          },
+          fail: err => {
+            console.error(err)
+            showModal('获取失败', '请检查网络连接状态')
+          }
+        })
+      } else {
+        // 首次登录
+        console.log('first time log in')
+        qcloud.login({
+          success: res => {
+            console.log('first time login success, res:', res)
+            let userinfo = wx.getStorageSync('userinfo')
+            if (userinfo) {
+              userinfo = Object.assign(userinfo, res)
+            } else {
+              userinfo = res
+            }
+            wx.setStorageSync('userinfo', userinfo)
+          },
+          fail: err => {
+            console.error(err)
+            showModal('获取失败', '请检查网络连接状态')
+          }
+        })
+      }
+    },
     onPhoneConfirm (event) {
       console.log(event)
       const phoneNumber = event.mp.detail
@@ -115,6 +175,7 @@ export default {
     },
     onSaveChange (event) {
       console.log(event)
+      this.getUserInfo()
       const info = event.mp.detail.value
       var userinfo = wx.getStorageSync('userinfo')
       let combinedUserinfo
@@ -157,9 +218,11 @@ export default {
 }
 .profile-avatar {
   position: absolute;
-  height: 150rpx;
-  width: 150rpx;
+  overflow: hidden;
+  width: 160rpx;
+  height: 160rpx;
   border-radius: 50%;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
   top: 200rpx;
 }
 .profile-nickName {
@@ -173,7 +236,7 @@ export default {
 .profile-footer {
   padding: 3px 40rpx 0 40rpx;
   position: absolute;
-  top: 880rpx;
+  top: 930rpx;
   font-size: 10px;
   color: #777;
 }

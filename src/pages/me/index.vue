@@ -2,7 +2,9 @@
   <div class="me-container">
     <a href="/pages/profile/main">
       <div class="head">
-        <img :src="userinfo.avatarUrl" class="avatar">
+        <div class="avatar">
+          <open-data type="userAvatarUrl"></open-data>
+        </div>
         <div class="nickName">{{userinfo.nickName}}</div>
         <img src="/static/images/icon/more.png" alt="更多" class="more-img">
       </div>
@@ -30,78 +32,28 @@
         </div>
       </a>
 
-      <button
-        class="btn"
-        open-type="getUserInfo"
-        @getuserinfo="getUserInfo"
-        lang="zh_CN"
-        >
-        获取用户信息
-      </button>
     </div>
   </div>
 </template>
 
 <script>
-import qcloud from 'wafer2-client-sdk'
-import { showSuccess, showModal } from '@/utils/index'
 export default {
   data () {
     return {
       userinfo: {
-        avatarUrl: '/static/images/alt-avatar.png',
-        nickName: '请先登录'
+        nickName: '请完善信息'
       }
     }
   },
-  methods: {
-    getUserInfo (e) {
-      console.log(e)
-      this.userinfo = e.target.userInfo
-      wx.setStorageSync('userinfo', this.userinfo)
-
-      const session = qcloud.Session.get()
-      console.log('qcloud session:', session)
-      if (session) {
-        // 第二次登录
-        // 或者本地已经有登录态
-        // 可使用本函数更新登录态
-        qcloud.loginWithCode({
-          success: res => {
-            this.userinfo = res
-            this.logged = true
-            wx.setStorageSync('userinfo', res)
-            showSuccess('登录成功')
-            console.log(this.userinfo)
-          },
-          fail: err => {
-            console.error(err)
-            showModal('登录失败', '请检查网络连接状态')
-          }
-        })
-      } else {
-        // 首次登录
-        console.log('first time log in')
-        qcloud.login({
-          success: res => {
-            console.log('first time login success, res:', res)
-            this.userinfo = res
-            this.logged = true
-            wx.setStorageSync('userinfo', res)
-            showSuccess('登录成功')
-          },
-          fail: err => {
-            console.error(err)
-            // showModal('登录错误', '请检查网络连接状态')
-          }
-        })
-      }
-    }
-  },
-  created () {
+  methods: {},
+  onShow () {
+    console.log('me page showed')
     let userinfo = wx.getStorageSync('userinfo')
     if (userinfo) {
       this.userinfo = userinfo
+    }
+    if (!userinfo.openId || !userinfo.QQId || !userinfo.phone) {
+      this.nickName = userinfo.nickName
     }
   }
 }
@@ -130,12 +82,13 @@ export default {
   height: 48px;
   border-radius: 50%;
   margin-left: 20rpx;
+  overflow: hidden;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .nickName {
   font-size: 18px;
   margin-top: 10px;
-  margin-left: 10px;
 }
 
 .options {
@@ -161,6 +114,12 @@ export default {
   margin-left: 20rpx;
   font-size: 34rpx;
   line-height: 30px;
+}
+.me-footer {
+  margin-top: 20rpx;
+  padding: 3px 40rpx 0 40rpx;
+  font-size: 10px;
+  color: #777;
 }
 </style>
 
