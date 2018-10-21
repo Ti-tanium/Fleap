@@ -15,6 +15,9 @@
       <PostCard :postList='post'></PostCard>
     </div>
 
+    <div class="index-bottom" :hidden="postList">
+      (ノ｀Д)ノ 什么内容都没有！
+    </div>
 
   </div>
 </template>
@@ -39,6 +42,11 @@ export default {
     }
   },
   mounted () {
+    wx.showLoading({
+      title: '加载中...', // 提示的内容,
+      mask: true, // 显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    })
     this.getPostList()
   },
   methods: {
@@ -84,6 +92,12 @@ swiper-item {
 .swiperPicture {
   width: 100%;
   height: 100%;
+}
+.index-bottom {
+  font-size: 14px;
+  margin: 10rpx 20rpx;
+  color: #888;
+  text-align: center;
 }
 </style>
 
