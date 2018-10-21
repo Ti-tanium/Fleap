@@ -30,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": 6,
 			"list": [
 				{
 					"id": -1,
@@ -59,7 +59,19 @@
 				{
 					"id": -1,
 					"name": "myFavorite",
-					"pathName": "pages/myFavorite/main"
+					"pathName": "pages/myFavorite/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "profile",
+					"pathName": "pages/profile/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "me",
+					"pathName": "pages/me/main"
 				}
 			]
 		}
