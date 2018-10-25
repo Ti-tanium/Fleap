@@ -76,6 +76,6 @@ function formatNumber (n) {
 }
 
 export function numberValidate (obj) {
-  var reg = /^[0-9]*$/
+  var reg = /^[0-9|.]*$/
   return reg.test(obj)
 }
