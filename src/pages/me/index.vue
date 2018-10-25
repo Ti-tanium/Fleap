@@ -33,6 +33,7 @@
       </a>
 
     </div>
+    <button class="btn" @click="clearStorage">清除缓存</button>
   </div>
 </template>
 
@@ -45,7 +46,11 @@ export default {
       }
     }
   },
-  methods: {},
+  methods: {
+    clearStorage () {
+      wx.clearStorageSync()
+    }
+  },
   onShow () {
     console.log('me page showed')
     let userinfo = wx.getStorageSync('userinfo')
