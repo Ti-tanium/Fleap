@@ -13,9 +13,9 @@ const CONF = {
     // tunnelServerUrl: '',
     // tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
     // // 腾讯云相关配置可以查看云 API 秘钥控制台：https://console.cloud.tencent.com/capi
-    // qcloudAppId: '1257251040',
-    // qcloudSecretId: 'AKIDeEwbzkJ1f8lK0cCPgyBIPQHzWzaQmtli',
-    // qcloudSecretKey: 'YDkEhFpJhz7AylQ77HmLn9bwLPQJ22wK',
+    qcloudAppId: '1257251040',
+    qcloudSecretId: 'AKIDeEwbzkJ1f8lK0cCPgyBIPQHzWzaQmtli',
+    qcloudSecretKey: 'YDkEhFpJhz7AylQ77HmLn9bwLPQJ22wK',
     // wxMessageToken: 'weixinmsgtoken',
     // networkTimeout: 30000,
 
