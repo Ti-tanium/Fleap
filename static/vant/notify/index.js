@@ -1,6 +1,5 @@
-import { create } from '../common/create'
-
-create({
+import { VantComponent } from '../common/component';
+VantComponent({
   props: {
     text: String,
     color: {
@@ -16,28 +15,27 @@ create({
       value: 3000
     }
   },
-
   methods: {
-    show () {
-      const { duration } = this.data
+    show: function show() {
+      var _this = this;
 
-      clearTimeout(this.timer)
+      var duration = this.data.duration;
+      clearTimeout(this.timer);
       this.setData({
         show: true
-      })
+      });
 
       if (duration > 0 && duration !== Infinity) {
-        this.timer = setTimeout(() => {
-          this.hide()
-        }, duration)
+        this.timer = setTimeout(function () {
+          _this.hide();
+        }, duration);
       }
     },
-
-    hide () {
-      clearTimeout(this.timer)
+    hide: function hide() {
+      clearTimeout(this.timer);
       this.setData({
         show: false
-      })
+      });
     }
   }
-})
+});
