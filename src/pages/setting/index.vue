@@ -1,6 +1,6 @@
 <template>
   <div class="setting-container">
-    setting
+    <img src="\static\images\icon\add.png" alt="" class="img">
   </div>
 </template>
 
@@ -9,4 +9,8 @@ export default {}
 </script>
 
 <style>
+.img{
+  width: 2px;
+  height: 2px;
+}
 </style>

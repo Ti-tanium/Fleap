@@ -11,9 +11,11 @@ module.exports = async ctx => {
         nickName,
         avatarUrl,
         major,
-        postTime
+        postTime,
+        QQId
     } = ctx.request.body
     console.log(
+        QQId,
         category,
         price,
         title,

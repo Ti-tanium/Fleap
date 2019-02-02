@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\node_modules",
+    "\\node_modules\\wafer-node-sdk\\lib",
+    "\\node_modules\\wafer-node-sdk\\lib\\message",
+    "\\node_modules\\wafer-node-sdk\\lib\\mysql"
+  ],
+  "SelectedNode": "\\node_modules\\wafer-node-sdk",
+  "PreviewInSolutionExplorer": false
+}

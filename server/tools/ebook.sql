@@ -1,8 +1,6 @@
 create table merchandise(
   id int auto_increment primary key ,
   openId varchar(60) not null,
-  avatarUrl varchar(300),
-  nickName varchar(100),
   title varchar(50) not null,
   detail varchar(400) not null,
   price float not null,
@@ -15,6 +13,8 @@ create table merchandise(
 
 create table user(
   openId varchar(60) primary key,
+  nickName varchar(100),
+  avatarUrl varchar(300),
   favorites varchar(300),
   QQId varchar(90),
   phoneNumber varchar(20),

@@ -2,7 +2,6 @@
   <div class="post-container">
     <form @submit="formSubmit">
       <div class="properties">
-
         <div class="category">
           <div class="price-prompt">类别</div>
           <radio-group class="radio-group" name="category" v-model="category">
@@ -41,22 +40,53 @@
         <SplitLine></SplitLine>
 
       </div>
+    <van-cell-group>
+      <van-field
+          :value="price"
+          name="price"
+          label="价格(元):"
+          type="number"
+          placeholder="请输入价格"
+          :error-message="priceErrorMessage"
+          @confirm="onPriceConfirm"
+        />
+        <van-field
+          :value="title"
+          name="title"
+          label="标题:"
+          placeholder="请输入商品名称，20字以内~"
+          :error-message="titleErrorMessage"
+          @change="onTitleChange"
+        />
+        <van-field
+          :value="detail"
+          name="detail"
+          type="textarea"
+          autosize
+          label="详细描述:"
+          placeholder="200字以内~"
+          :error-message="detailErrorMessage"
+          @change="onDetailChange"
+          :border="false"
+        />
 
-    <div class="price">
-      <div class="price-prompt">价格(元):</div>
-      <input name="price" type="text" v-model="price" placeholder="0.00">
-    </div>
+      </van-cell-group>
 
-    <SplitLine></SplitLine>
-
-    <textarea v-model="title" name="title" id="title-txt" rows="1" maxlength="20" placeholder="输入商品名称,20字以内"></textarea>
-
-    <SplitLine></SplitLine>
-
-    <textarea v-model="detail" name="detail" id="detail-txt" placeholder="输入描述,200字以内"></textarea>
-
-    <SplitLine></SplitLine>
-    <addPicture @addPicture="addPicture"></addPicture>
+      <wux-upload 
+      listType="picture-card" 
+      :defaultFileList="fileList" 
+      count="9" 
+      max="9" 
+      compressed="true"
+      url=getUploadUrl
+      @change="onChange" 
+      @success="onSuccess" 
+      @fail="onFail" 
+      @complete="onComplete" 
+      @preview="onPreview">
+        <image :src="imageUrl" :v-if="imageUrl" />
+        <text>Upload</text>
+      </wux-upload>
 
     <button class="btn" formType="submit">发布</button>
 
@@ -65,26 +95,36 @@
 </template>
 
 <script>
-import SplitLine from '@/components/SplitLine'
-import addPicture from '@/components/addPicture'
-import { post, showModal, showSuccess, formatTime } from '@/utils/index'
+import {
+  post,
+  showModal,
+  showSuccess,
+  formatTime,
+  numberValidate
+} from '@/utils/index'
 import config from '@/config'
 export default {
-  components: { SplitLine, addPicture },
   data () {
     return {
       postInfo: {},
       pictures: [],
       detail: '',
+      detailErrorMessage: '',
       title: '',
+      titleErrorMessage: '',
       price: '',
+      priceErrorMessage: '',
       category: 'textBook',
-      uploadPictures: []
+      uploadPictures: [],
+      fileList: []
     }
   },
   methods: {
     radioChange (e) {
       console.log(e)
+    },
+    getUploadUrl(){
+      return config.uploadUrl;
     },
     checkFormInfo (formInfo) {
       if (!formInfo.category) {
@@ -111,6 +151,8 @@ export default {
       const time = formatTime(new Date())
       const userinfo = wx.getStorageSync('userinfo')
 
+      console.log('form Information:', formInfo)
+
       wx.showLoading({
         title: '上传中...', // 提示的内容,
         mask: true, // 显示透明蒙层，防止触摸穿透,
@@ -119,67 +161,85 @@ export default {
 
       // check form information not null
       if (!this.checkFormInfo(formInfo)) {
+        console.log('Form information not complete.')
         return
       }
 
       // upload pictures
-      if (this.pictures.length > 0) {
-        for (let i = 0; i < this.pictures.length; i++) {
-          await wx.uploadFile({
-            url: config.uploadUrl, // 开发者服务器 url
-            filePath: this.pictures[i], // 要上传文件资源的路径
-            name: 'file', // 文件对应的 key , 开发者在服务器端通过这个 key 可以获取到文件二进制内容
-            success: async res => {
-              res = JSON.parse(res.data)
-              console.log('uploadFile success imgUrl:', res.data.imgUrl)
-              this.uploadPictures = [...this.uploadPictures, res.data.imgUrl]
-              // 获得所有上传的图片路径之后 再一并提交服务器
-              console.log(
-                'uploadLength=',
-                this.uploadPictures.length,
-                'localLength=',
-                this.pictures.length
-              )
-              if (this.uploadPictures.length === this.pictures.length) {
-                Object.assign(this.postInfo, formInfo, {
-                  image: this.uploadPictures.join(','),
-                  nickName: userinfo.nickName,
-                  avatarUrl: userinfo.avatarUrl,
-                  openId: userinfo.openId,
-                  postTime: time
-                })
-                console.log('succeed in post second-hand deel information.')
-                console.log('postInfo', this.postInfo)
+      // console.log('The number of pictures chosen', this.pictures.length)
+      // if (this.pictures.length > 0) {
+      //   for (let i = 0; i < this.pictures.length; i++) {
+      //     console.log('uploading the', i + 1, 'th picture.')
+      //     console.log('uploading picture:', this.pictures[i])
+      //     wx.uploadFile({
+      //       url: config.uploadUrl, // 开发者服务器 url
+      //       filePath: this.pictures[i], // 要上传文件资源的路径
+      //       name: 'file', // 文件对应的 key , 开发者在服务器端通过这个 key 可以获取到文件二进制内容
+      //       success: res => {
+      //         res = JSON.parse(res.data)
+      //         console.log('uploadFile success call back result:', res)
+      //         console.log(
+      //           'uploadFile succeeded,the',
+      //           i,
+      //           'th imgUrl:',
+      //           res.data.imgUrl
+      //         )
+      //         this.uploadPictures = [...this.uploadPictures, res.data.imgUrl]
+      //         // 获得所有上传的图片路径之后 再一并提交服务器
+      //         console.log(
+      //           'uploadLength=',
+      //           this.uploadPictures.length,
+      //           'localLength=',
+      //           this.pictures.length
+      //         )
+      //         if (this.uploadPictures.length === this.pictures.length) {
+      //           Object.assign(this.postInfo, formInfo, {
+      //             image: this.uploadPictures.join(','),
+      //             nickName: userinfo.nickName,
+      //             avatarUrl: userinfo.avatarUrl,
+      //             openId: userinfo.openId,
+      //             postTime: time
+      //           })
+      //           console.log('succeed in post second-hand deel information.')
+      //           console.log('postInfo', this.postInfo)
 
-                // post merchandise information to server
-                try {
-                  await post(config.host + '/weapp/post', this.postInfo)
-                  this.uploadPictures = []
-                  showSuccess('发布成功')
-                  this.formReset()
-                } catch (e) {
-                  console.log(e)
-                  showModal('发布失败', '请检查您的网络状态')
-                }
-              }
-            },
-            fail: () => {},
-            complete: () => {}
-          })
-        }
-        wx.hideLoading()
-      } else {
-        Object.assign(this.postInfo, formInfo, {
-          image: '',
-          nickName: userinfo.nickName,
-          avatarUrl: userinfo.avatarUrl,
-          openId: userinfo.openId,
-          postTime: time
-        })
-        console.log('succeed in post second-hand deel information.')
-        console.log('postInfo', this.postInfo)
-
+      //           // post merchandise information to server
+      //           try {
+      //             post(config.host + '/weapp/post', this.postInfo)
+      //             this.uploadPictures = []
+      //             showSuccess('发布成功')
+      //             this.formReset()
+      //           } catch (e) {
+      //             console.log(e)
+      //             showModal('发布失败', '请检查您的网络状态')
+      //           }
+              // }
+            // },
+        //     fail: () => {},
+        //     complete: () => {}
+        //   })
+      //   }
+      //   wx.hideLoading()
+      // } else {
+      //   Object.assign(this.postInfo, formInfo, {
+      //     image: '',
+      //     nickName: userinfo.nickName,
+      //     avatarUrl: userinfo.avatarUrl,
+      //     openId: userinfo.openId,
+      //     QQId: userinfo.QQId,
+      //     phone: userinfo.phone,
+      //     postTime: time
+      //   })
+      //   console.log('succeed in post second-hand deel information.')
+//         console.log('postInfo', this.postInfo)
         // post merchandise information to server
+        Object.assign(this.postInfo, formInfo, {
+                   image: this.uploadPictures.join(','),
+                   nickName: userinfo.nickName,
+                   avatarUrl: userinfo.avatarUrl,
+                   openId: userinfo.openId,
+                   postTime: time
+                 })
         try {
           await post(config.host + '/weapp/post', this.postInfo)
           this.uploadPictures = []
@@ -191,17 +251,44 @@ export default {
         }
       }
     },
-    addPicture (value) {
-      this.pictures = value
-    },
     formReset () {
       this.price = ''
       this.title = ''
       this.detail = ''
       this.category = 'textBook'
       console.log('reset form and picture')
+    },
+    onPriceConfirm (event) {
+      const price = event.mp.detail
+      console.log('price is number?', numberValidate(price))
+      if (!numberValidate(price)) {
+        this.priceErrorMessage = '请输入正确的价格'
+      } else {
+        this.priceErrorMessage = ''
+      }
+    },
+    onTitleChange (event) {
+      const title = event.mp.detail
+      console.log('title is over 20 character?', title.length > 20)
+      if (title.length > 20) {
+        this.titleErrorMessage = '标题过长'
+      } else {
+        this.titleErrorMessage = ''
+      }
+    },
+    onDetailChange (event) {
+      const detail = event.mp.detail
+      console.log('detail is over 20 character?', detail.length > 20)
+      if (detail.length > 200) {
+        this.titleErrorMessage = '标题过长'
+      } else {
+        this.titleErrorMessage = ''
+      }
+    },
+    onSuccess (res) {
+      console.log(res)
     }
-  }
+  
 }
 </script>
 

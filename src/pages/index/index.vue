@@ -16,7 +16,7 @@
     </div>
 
     <div class="index-bottom" :hidden="postList">
-      (ノ｀Д)ノ 什么内容都没有！
+        (ノ｀Д)ノ 什么内容都没有！
     </div>
 
   </div>

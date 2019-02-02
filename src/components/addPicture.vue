@@ -1,6 +1,6 @@
 <template>
   <div class="addPicture-container">
-    <div class="frame" v-for="picture in localPictures" :key="index">
+    <div class="frame" v-for="picture in localPictures" v-bind:key="index">
       <img :src="picture" class="picture" mode="aspectFill">
     </div>
     <div class="add-frame" @click="chooseImage" :hidden="hideAdd">

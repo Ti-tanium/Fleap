@@ -23,7 +23,7 @@
           <img src="/static/images/icon/post.png" class="icon">
         </div>
         <div class="img-container">
-          <img :src="picture" class="item-image" v-for="picture in pictures" :key="index" mode="aspectFill" @click="previewImage(pictrue,index)">
+          <img :src="picture" class="item-image" v-if="picture" v-for="picture in pictures" :key="index" mode="aspectFill" @click="previewImage(pictrue,index)">
         </div>
       </div>
       <displayCell iconUrl="/static/images/icon/price.png" :content="postDetail.price"></displayCell>
@@ -31,10 +31,16 @@
       <displayCell iconUrl="/static/images/icon/tag.png" content="#生活用品" :border="true"></displayCell>
     </div>
 
-    <div class="contact">
+    <!-- <div class="contact">
       <displayCell iconUrl="/static/images/icon/qq.png" :content="postDetail.QQId" v-if="postDetail.QQId"></displayCell>
       <displayCell iconUrl="/static/images/icon/" :content="postDetail.phoneNumber" v-if="postDetail.phoneNumber"></displayCell>
+    </div> -->
+
+    <div class="contact">
+      <displayCell iconUrl="/static/images/icon/qq.png" :content="postDetail.QQId"></displayCell>
+      <displayCell iconUrl="/static/images/icon/phone.png" :content="postDetail.phone"></displayCell>
     </div>
+
 
     <div class="message">
 
@@ -75,7 +81,11 @@ export default {
       const postDetail = await get(config.host + '/weapp/postdetail', {
         itemId: this.itemId
       })
-      this.postDetail = postDetail.data
+      this.postDetail = Object.assign(postDetail.data, {
+        QQId: '113214214',
+        phone: '13711111111'
+      })
+      // this.postDetail = postDetail.data
       this.pictures = this.postDetail.image.split(',')
       console.log('get post detail of id=' + this.itemId)
       console.log('post detail:', this.postDetail)
