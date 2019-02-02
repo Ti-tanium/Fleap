@@ -3,8 +3,6 @@
   "usingComponents": {
     "van-field": "/static/vant/field/index",
     "van-cell-group": "/static/vant/cell-group/index",
-    "van-cell":"/static/vant/cell/index",
-    "wux-upload": "/static/vant/upload/index",
-    "wux-select":"/static/vant/select/index"
+    "wux-upload": "/static/vant/upload/index"
   }
 }
