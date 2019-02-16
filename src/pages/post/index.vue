@@ -1,47 +1,28 @@
 <template>
   <div class="post-container">
     <form @submit="formSubmit">
-      <div class="properties">
-        <div class="category">
-          <div class="price-prompt">类别</div>
-          <radio-group class="radio-group" name="category" v-model="category">
-            <label class="radio">
-              <radio
-                value="textBook"
-                checked="true"
-                />
-              教材
-            </label>
-            <label class="radio">
-              <radio
-                value="daily-necessities"
-                :checked="false"
-                />
-              日常用品
-            </label>
-           <label class="radio">
-              <radio
-                value="electronics"
-                :checked="false"
-                />
-              电子产品
-            </label>
-            <label class="radio">
-              <radio
-                value="other"
-                :checked="false"
-                />
-              其他
-            </label>
-
-          </radio-group>
-        </div>
-
-        <SplitLine></SplitLine>
-
+      <picker @change="bindPickerChange" :value="pickerIndex" name="category" :range="options">
+        <van-cell title="类别:" :value="category" placeholder="请选择类别"></van-cell>
+      </picker>
+      <div class="post-upload">
+        <wux-upload
+          listType="picture-card"
+          :defaultFileList="fileList"
+          name="file"
+          count="9"
+          max="9"
+          compressed="true"
+          :url="getUploadUrl"
+          @success="onSuccess"
+          @fail="onFail"
+          @complete="onComplete"
+          @preview="onPreview"
+        >
+          <text>Upload</text>
+        </wux-upload>
       </div>
-    <van-cell-group>
-      <van-field
+      <van-cell-group>
+        <van-field
           :value="price"
           name="price"
           label="价格(元):"
@@ -62,34 +43,15 @@
           :value="detail"
           name="detail"
           type="textarea"
-          autosize
+          :autosize="true"
           label="详细描述:"
           placeholder="200字以内~"
           :error-message="detailErrorMessage"
           @change="onDetailChange"
           :border="false"
         />
-
       </van-cell-group>
-
-      <wux-upload 
-      listType="picture-card" 
-      :defaultFileList="fileList" 
-      count="9" 
-      max="9" 
-      compressed="true"
-      url=getUploadUrl
-      @change="onChange" 
-      @success="onSuccess" 
-      @fail="onFail" 
-      @complete="onComplete" 
-      @preview="onPreview">
-        <image :src="imageUrl" :v-if="imageUrl" />
-        <text>Upload</text>
-      </wux-upload>
-
-    <button class="btn" formType="submit">发布</button>
-
+      <button class="btn" formType="submit">发布</button>
     </form>
   </div>
 </template>
@@ -101,198 +63,169 @@ import {
   showSuccess,
   formatTime,
   numberValidate
-} from '@/utils/index'
-import config from '@/config'
+} from "@/utils/index";
+import config from "@/config";
 export default {
-  data () {
+  data() {
     return {
       postInfo: {},
-      pictures: [],
-      detail: '',
-      detailErrorMessage: '',
-      title: '',
-      titleErrorMessage: '',
-      price: '',
-      priceErrorMessage: '',
-      category: 'textBook',
-      uploadPictures: [],
-      fileList: []
+      detail: "",
+      detailErrorMessage: "",
+      title: "",
+      titleErrorMessage: "",
+      price: "",
+      priceErrorMessage: "",
+      category: "",
+      uploadImageUrls: [],
+      fileList: [],
+      options: [
+        "教辅资料",
+        "日常用品",
+        "电子产品",
+        "盆栽",
+        "服装",
+        "拼车",
+        "其他"
+      ],
+      pickerIndex: "",
+      imageUrl: ""
+    };
+  },
+  computed: {
+    getUploadUrl() {
+      return config.uploadUrl;
     }
   },
   methods: {
-    radioChange (e) {
-      console.log(e)
+    bindPickerChange(e) {
+      console.log(e);
+      this.pickerIndex = e.target.value;
+      this.category = this.options[this.pickerIndex];
     },
-    getUploadUrl(){
-      return config.uploadUrl;
-    },
-    checkFormInfo (formInfo) {
+    checkFormInfo(formInfo) {
       if (!formInfo.category) {
-        showModal('信息不完全', '请选择商品类别')
-        wx.hideLoading()
-        return false
+        showModal("信息不完全", "请选择商品类别");
+        wx.hideLoading();
+        return false;
       } else if (!formInfo.price) {
-        showModal('信息不完全', '请填写商品价格')
-        wx.hideLoading()
-        return false
+        showModal("信息不完全", "请填写商品价格");
+        wx.hideLoading();
+        return false;
       } else if (!formInfo.title) {
-        showModal('信息不完全', '请填写标题')
-        wx.hideLoading()
-        return false
+        showModal("信息不完全", "请填写标题");
+        wx.hideLoading();
+        return false;
       } else if (!formInfo.detail) {
-        showModal('信息不完全', '请填写详细描述')
-        wx.hideLoading()
-        return false
+        showModal("信息不完全", "请填写详细描述");
+        wx.hideLoading();
+        return false;
       }
-      return true
+      return true;
     },
-    async formSubmit (e) {
-      var formInfo = e.target.value
-      const time = formatTime(new Date())
-      const userinfo = wx.getStorageSync('userinfo')
-
-      console.log('form Information:', formInfo)
-
+    formReset() {
+      this.price = "";
+      this.title = "";
+      this.detail = "";
+      this.category = "";
+      //TODO:reset picture
+      console.log("reset form and picture");
+    },
+    async formSubmit(e) {
+      var formInfo = e.target.value;
+      const time = formatTime(new Date());
+      const userinfo = wx.getStorageSync("userinfo");
       wx.showLoading({
-        title: '上传中...', // 提示的内容,
+        title: "上传中...", // 提示的内容,
         mask: true, // 显示透明蒙层，防止触摸穿透,
         success: res => {}
-      })
+      });
 
       // check form information not null
       if (!this.checkFormInfo(formInfo)) {
-        console.log('Form information not complete.')
-        return
+        console.log("Form information not complete.");
+        return;
       }
 
-      // upload pictures
-      // console.log('The number of pictures chosen', this.pictures.length)
-      // if (this.pictures.length > 0) {
-      //   for (let i = 0; i < this.pictures.length; i++) {
-      //     console.log('uploading the', i + 1, 'th picture.')
-      //     console.log('uploading picture:', this.pictures[i])
-      //     wx.uploadFile({
-      //       url: config.uploadUrl, // 开发者服务器 url
-      //       filePath: this.pictures[i], // 要上传文件资源的路径
-      //       name: 'file', // 文件对应的 key , 开发者在服务器端通过这个 key 可以获取到文件二进制内容
-      //       success: res => {
-      //         res = JSON.parse(res.data)
-      //         console.log('uploadFile success call back result:', res)
-      //         console.log(
-      //           'uploadFile succeeded,the',
-      //           i,
-      //           'th imgUrl:',
-      //           res.data.imgUrl
-      //         )
-      //         this.uploadPictures = [...this.uploadPictures, res.data.imgUrl]
-      //         // 获得所有上传的图片路径之后 再一并提交服务器
-      //         console.log(
-      //           'uploadLength=',
-      //           this.uploadPictures.length,
-      //           'localLength=',
-      //           this.pictures.length
-      //         )
-      //         if (this.uploadPictures.length === this.pictures.length) {
-      //           Object.assign(this.postInfo, formInfo, {
-      //             image: this.uploadPictures.join(','),
-      //             nickName: userinfo.nickName,
-      //             avatarUrl: userinfo.avatarUrl,
-      //             openId: userinfo.openId,
-      //             postTime: time
-      //           })
-      //           console.log('succeed in post second-hand deel information.')
-      //           console.log('postInfo', this.postInfo)
-
-      //           // post merchandise information to server
-      //           try {
-      //             post(config.host + '/weapp/post', this.postInfo)
-      //             this.uploadPictures = []
-      //             showSuccess('发布成功')
-      //             this.formReset()
-      //           } catch (e) {
-      //             console.log(e)
-      //             showModal('发布失败', '请检查您的网络状态')
-      //           }
-              // }
-            // },
-        //     fail: () => {},
-        //     complete: () => {}
-        //   })
-      //   }
-      //   wx.hideLoading()
-      // } else {
-      //   Object.assign(this.postInfo, formInfo, {
-      //     image: '',
-      //     nickName: userinfo.nickName,
-      //     avatarUrl: userinfo.avatarUrl,
-      //     openId: userinfo.openId,
-      //     QQId: userinfo.QQId,
-      //     phone: userinfo.phone,
-      //     postTime: time
-      //   })
-      //   console.log('succeed in post second-hand deel information.')
-//         console.log('postInfo', this.postInfo)
-        // post merchandise information to server
-        Object.assign(this.postInfo, formInfo, {
-                   image: this.uploadPictures.join(','),
-                   nickName: userinfo.nickName,
-                   avatarUrl: userinfo.avatarUrl,
-                   openId: userinfo.openId,
-                   postTime: time
-                 })
-        try {
-          await post(config.host + '/weapp/post', this.postInfo)
-          this.uploadPictures = []
-          showSuccess('发布成功')
-          this.formReset()
-        } catch (e) {
-          console.log(e)
-          showModal('发布失败', '请检查您的网络状态')
-        }
+      Object.assign(this.postInfo, formInfo, {
+        image: this.uploadImageUrls.join(","),
+        nickName: userinfo.nickName,
+        avatarUrl: userinfo.avatarUrl,
+        openId: userinfo.openId,
+        postTime: time
+      });
+      try {
+        await post(config.host + "/weapp/post", this.postInfo);
+        this.uploadPictures = [];
+        showSuccess("发布成功");
+        this.formReset();
+      } catch (e) {
+        console.log(e);
+        showModal("发布失败", "请检查您的网络状态");
       }
     },
-    formReset () {
-      this.price = ''
-      this.title = ''
-      this.detail = ''
-      this.category = 'textBook'
-      console.log('reset form and picture')
-    },
-    onPriceConfirm (event) {
-      const price = event.mp.detail
-      console.log('price is number?', numberValidate(price))
+    onPriceConfirm(event) {
+      const price = event.mp.detail;
+      console.log("price is number?", numberValidate(price));
       if (!numberValidate(price)) {
-        this.priceErrorMessage = '请输入正确的价格'
+        this.priceErrorMessage = "请输入正确的价格";
       } else {
-        this.priceErrorMessage = ''
+        this.priceErrorMessage = "";
       }
     },
-    onTitleChange (event) {
-      const title = event.mp.detail
-      console.log('title is over 20 character?', title.length > 20)
+    onTitleChange(event) {
+      const title = event.mp.detail;
+      console.log("title is over 20 character?", title.length > 20);
       if (title.length > 20) {
-        this.titleErrorMessage = '标题过长'
+        this.titleErrorMessage = "标题过长";
       } else {
-        this.titleErrorMessage = ''
+        this.titleErrorMessage = "";
       }
     },
-    onDetailChange (event) {
-      const detail = event.mp.detail
-      console.log('detail is over 20 character?', detail.length > 20)
+    onDetailChange(event) {
+      const detail = event.mp.detail;
+      console.log("detail is over 20 character?", detail.length > 20);
       if (detail.length > 200) {
-        this.titleErrorMessage = '标题过长'
+        this.titleErrorMessage = "标题过长";
       } else {
-        this.titleErrorMessage = ''
+        this.titleErrorMessage = "";
       }
     },
-    onSuccess (res) {
-      console.log(res)
+    onSuccess(e) {
+      console.log("wux-upload onSuccess:", e);
+    },
+    onFail(e) {
+      console.log("upload onFail:", e);
+    },
+    onComplete(e) {
+      console.log("upload onComplete:");
+      const datastr = e.target.data;
+      const imageUrl = JSON.parse(datastr).data.imgUrl;
+      console.log(imageUrl);
+      this.uploadImageUrls.push(imageUrl);
+    },
+    onPreview(e) {
+      console.log("onPreview", e);
+      const { file, fileList } = e.target;
+      wx.previewImage({
+        current: file.url,
+        urls: fileList.map(n => n.url)
+      });
     }
-  
-}
+  }
+};
 </script>
 
 <style>
+.post-upload {
+  margin: 32rpx 40rpx;
+}
+#post-category-picker {
+  display: flex;
+  flex-direction: row;
+  margin: 34rpx;
+  font-size: 15px;
+  color: #323233;
+}
 .price {
   display: flex;
   flex-direction: row;
