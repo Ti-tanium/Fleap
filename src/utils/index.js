@@ -31,7 +31,7 @@ export function showSuccess (text) {
   wx.showToast({
     title: text, // 提示的内容,
     icon: 'success', // 图标,
-    duration: 2000, // 延迟时间,
+    duration: 1000, // 延迟时间,
     mask: true, // 显示透明蒙层，防止触摸穿透,
     success: res => {}
   })
