@@ -6,43 +6,25 @@ module.exports = async ctx => {
         price,
         title,
         detail,
-        image,
+        images,
         openId,
-        nickName,
-        avatarUrl,
-        major,
         postTime,
-        QQId
+        location
     } = ctx.request.body
-    console.log(
-        QQId,
-        category,
-        price,
-        title,
-        detail,
-        image,
-        openId,
-        nickName,
-        avatarUrl,
-        major,
-        postTime
-    )
     const sold = false
     let viewCount = 0
     try {
-        await mysql('merchandise').insert({
+        await mysql('post').insert({
             category,
             price,
             title,
             detail,
-            image,
+            images,
             openId,
-            nickName,
-            avatarUrl,
-            major,
             sold,
             postTime,
-            viewCount
+            viewCount,
+            location
         })
         ctx.state.data = {
             msg: 'success'
