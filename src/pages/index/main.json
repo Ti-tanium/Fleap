@@ -1,4 +1,8 @@
 {
   "navigationBarTitleText": "蚤小跳",
-  "enablePullDownRefresh": true
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "van-tab": "/static/vant/tab/index",
+    "van-tabs": "/static/vant/tabs/index"
+  }
 }

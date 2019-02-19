@@ -11,6 +11,18 @@
 
     <Search></Search>
 
+    <van-tabs :active="activeTabIndex" @change="onTabChange">
+      <van-tab title="附近">附近</van-tab>
+      <van-tab title="推荐">推荐</van-tab>
+      <van-tab title="教材">教材</van-tab>
+      <van-tab title="日常用品">日常用品</van-tab>
+      <van-tab title="电子产品">电子产品</van-tab>
+      <van-tab title="盆栽">盆栽</van-tab>
+      <van-tab title="服装">服装</van-tab>
+      <van-tab title="拼车">拼车</van-tab>
+      <van-tab title="其他">其他</van-tab>
+    </van-tabs>
+
     <div class="postList" v-for="post in postList" :key="index">
       <PostCard :postList='post'></PostCard>
     </div>
@@ -38,7 +50,8 @@ export default {
         '/static/images/csu/csu3.jpg'
       ],
       postList: {},
-      category: ''
+      category: '',
+      activeTabIndex:''
     }
   },
   mounted () {
@@ -78,6 +91,9 @@ export default {
       fail: () => {},
       complete: () => {}
     }
+  },
+  onTabChange(e){
+
   }
 }
 </script>
