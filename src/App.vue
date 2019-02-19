@@ -1,11 +1,11 @@
 <script>
-import qcloud from 'wafer2-client-sdk'
-import config from './config'
+import qcloud from "wafer2-client-sdk";
+import config from "./config";
 export default {
-  created () {
-    qcloud.setLoginUrl(config.loginUrl)
+  created() {
+    qcloud.setLoginUrl(config.loginUrl);
   }
-}
+};
 </script>
 
 <style>
@@ -21,6 +21,15 @@ export default {
 .btn {
   color: white;
   background-color: #1296db;
+  margin-top: 30rpx;
+  width: 90%;
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 32rpx;
+}
+.red-btn {
+  color: white;
+  background-color: #e64340;
   margin-top: 30rpx;
   width: 90%;
   height: 70rpx;
