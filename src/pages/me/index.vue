@@ -17,51 +17,109 @@
           <div class="btn-text">我的发布</div>
         </div>
       </a>
-
+      
       <a href="/pages/myFavorite/main">
-        <div class='tab-btn'>
+        <div class="tab-btn">
           <img src="/static/images/icon/favorite.png" class="icon-img">
           <div class="btn-text">我的收藏</div>
         </div>
       </a>
-
+      
       <a href="/pages/setting/main">
         <div class="tab-btn">
           <img src="/static/images/icon/setting.png" class="icon-img">
           <div class="btn-text">设置</div>
         </div>
       </a>
-
     </div>
-    <button class="btn" @click="clearStorage">清除缓存</button>
+    <button class="btn" v-if="!isLogin" open-type="getUserInfo" lang="zh_CN" @click="getUserInfo">登录</button>
+    <button class="red-btn" @click="clearStorage" v-if="isLogin">退出当前账号</button>
   </div>
 </template>
 
 <script>
+import qcloud from "wafer2-client-sdk";
+import { numberValidate, showSuccess, showModal } from "@/utils/index.js";
 export default {
-  data () {
+  data() {
     return {
       userinfo: {
-        nickName: '请完善信息'
+        nickName: "请先登录"
+      },
+      isLogin: false
+    };
+  },
+  methods: {
+    clearStorage() {
+      this.isLogin = false;
+      wx.clearStorageSync();
+      this.userinfo.nickName = "请先登录";
+    },
+    getUserInfo(e) {
+      const session = qcloud.Session.get();
+      if (session) {
+        // 第二次登录
+        // 或者本地已经有登录态
+        // 可使用本函数更新登录态
+        qcloud.loginWithCode({
+          success: res => {
+            let userinfo = wx.getStorageSync("userinfo");
+            if (userinfo) {
+              userinfo = Object.assign(userinfo, res);
+            } else {
+              userinfo = res;
+            }
+            wx.setStorageSync("userinfo", userinfo);
+            showSuccess("登录成功");
+            this.isLogin = true;
+            this.userinfo.nickName = "请完善信息";
+          },
+          fail: err => {
+            console.error(err);
+            showModal("获取失败", "请检查网络连接状态");
+          }
+        });
+      } else {
+        // 首次登录
+        console.log("first time log in");
+        qcloud.login({
+          success: res => {
+            console.log("first time login success, res:", res);
+            let userinfo = wx.getStorageSync("userinfo");
+            if (userinfo) {
+              userinfo = Object.assign(userinfo, res);
+            } else {
+              userinfo = res;
+            }
+            wx.setStorageSync("userinfo", userinfo);
+            showSuccess("登录成功");
+            this.isLogin = true;
+            this.userinfo.nickName = "请完善信息";
+          },
+          fail: err => {
+            console.error(err);
+            showModal("获取失败", "请检查网络连接状态");
+          }
+        });
       }
     }
   },
-  methods: {
-    clearStorage () {
-      wx.clearStorageSync()
+  onShow() {
+    console.log("me page showed");
+    let userinfo = wx.getStorageSync("userinfo");
+    if (userinfo.openId) {
+      this.userinfo = userinfo;
+      this.isLogin = true;
+    } else {
+      this.isLogin = false;
     }
-  },
-  onShow () {
-    console.log('me page showed')
-    let userinfo = wx.getStorageSync('userinfo')
-    if (userinfo) {
-      this.userinfo = userinfo
-    }
-    if (!userinfo.openId || !userinfo.QQId || !userinfo.phone) {
-      this.nickName = userinfo.nickName
+    if (!userinfo.major || !userinfo.QQId || !userinfo.phone) {
+      this.userinfo.nickName = "请完善信息";
+    } else {
+      this.userinfo.nickName = userinfo.nickName;
     }
   }
-}
+};
 </script>
 
 <style>
