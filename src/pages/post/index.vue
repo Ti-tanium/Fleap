@@ -2,7 +2,7 @@
   <div class="post-container">
     <form @submit="formSubmit">
       <picker @change="bindPickerChange" :value="pickerIndex" name="category" :range="options">
-        <van-cell title="类别:" :value="category" placeholder="请选择类别"></van-cell>
+        <van-field label="类别:" :value="category" placeholder="请选择类别"></van-field>
       </picker>
       <div class="post-upload">
         <wux-upload
@@ -26,7 +26,7 @@
           :value="price"
           name="price"
           label="价格(元):"
-          type="number"
+          type="digit"
           placeholder="请输入价格"
           :error-message="priceErrorMessage"
           @confirm="onPriceConfirm"
@@ -96,6 +96,15 @@ export default {
       return config.uploadUrl;
     }
   },
+  onShow() {
+    console.log("post page showed");
+    const userinfo = wx.getStorageSync("userinfo");
+    if (!userinfo.openId) {
+      showModal("提示", "请先登录");
+    } else if (!userinfo.phone || !userinfo.QQId) {
+      showModal("提示", "请先完善信息");
+    }
+  },
   methods: {
     bindPickerChange(e) {
       console.log(e);
@@ -146,13 +155,14 @@ export default {
         return;
       }
 
+      //TODO: need to add location information here
       Object.assign(this.postInfo, formInfo, {
-        image: this.uploadImageUrls.join(","),
-        nickName: userinfo.nickName,
-        avatarUrl: userinfo.avatarUrl,
         openId: userinfo.openId,
-        postTime: time
+        images: this.uploadImageUrls.join(","),
+        postTime: time,
+        location: ""
       });
+      console.log("post data:", this.postInfo);
       try {
         await post(config.host + "/weapp/post", this.postInfo);
         this.uploadPictures = [];
