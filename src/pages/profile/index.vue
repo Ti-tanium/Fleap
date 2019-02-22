@@ -15,6 +15,9 @@
     <div class="profile-cell-group">
       <form @submit="onSaveChange">
         <van-cell-group>
+          <picker @change="MajorPickerChange" :value="index" :range="majorArray">
+            <van-field :value="major" label="专业:" name="major" placeholder="请选择专业类别"/>
+          </picker>
           <van-field
             :value="QQId"
             name="QQId"
@@ -35,9 +38,6 @@
             @confirm="onPhoneConfirm"
             @change="onPhoneChange"
           />
-          <picker @change="MajorPickerChange" :value="index" :range="majorArray">
-            <van-field :value="major" label="专业:" name="major" placeholder="请选择专业类别"/>
-          </picker>
         </van-cell-group>
         <button formType="submit" class="btn">保存信息</button>
       </form>

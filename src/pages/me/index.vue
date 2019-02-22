@@ -33,13 +33,14 @@
       </a>
     </div>
     <button class="btn" v-if="!isLogin" open-type="getUserInfo" lang="zh_CN" @click="getUserInfo">登录</button>
-    <button class="red-btn" @click="clearStorage" v-if="isLogin">退出当前账号</button>
+    <button class="red-btn" @click="logout" v-if="isLogin">退出当前账号</button>
   </div>
 </template>
 
 <script>
 import qcloud from "wafer2-client-sdk";
-import { numberValidate, showSuccess, showModal } from "@/utils/index.js";
+import { numberValidate, showSuccess, showModal, get } from "@/utils/index.js";
+import config from "@/config";
 export default {
   data() {
     return {
@@ -49,30 +50,50 @@ export default {
       isLogin: false
     };
   },
+
   methods: {
-    clearStorage() {
+    async getAdditionalUserInfo(oepnId) {
+      const data = await get(config.getAddUserInfoUrl, { openId: oepnId });
+      const addInfo = data.data.list;
+      return addInfo;
+    },
+    logout() {
       this.isLogin = false;
-      wx.clearStorageSync();
+      wx.removeStorageSync("userinfo");
       this.userinfo.nickName = "请先登录";
     },
+    login(userinfo) {
+      this.isLogin = true;
+      wx.setStorageSync("userinfo", userinfo);
+      showSuccess("登录成功");
+    },
     getUserInfo(e) {
+      const that = this;
       const session = qcloud.Session.get();
       if (session) {
         // 第二次登录
         // 或者本地已经有登录态
         // 可使用本函数更新登录态
+        console.log("second time log in");
         qcloud.loginWithCode({
-          success: res => {
+          async success(res) {
             let userinfo = wx.getStorageSync("userinfo");
             if (userinfo) {
               userinfo = Object.assign(userinfo, res);
             } else {
               userinfo = res;
             }
-            wx.setStorageSync("userinfo", userinfo);
-            showSuccess("登录成功");
-            this.isLogin = true;
-            this.userinfo.nickName = "请完善信息";
+            const addInfo = await that.getAdditionalUserInfo(userinfo.openId);
+            console.log(addInfo);
+
+            if (addInfo.length !== 0) {
+              that.userinfo.nickName = userinfo.nickName;
+              Object.assign(userinfo, addInfo[0]);
+              that.login(userinfo);
+            } else {
+              that.login(userinfo);
+              that.userinfo.nickName = "请完善信息";
+            }
           },
           fail: err => {
             console.error(err);
@@ -83,7 +104,7 @@ export default {
         // 首次登录
         console.log("first time log in");
         qcloud.login({
-          success: res => {
+          async success(res) {
             console.log("first time login success, res:", res);
             let userinfo = wx.getStorageSync("userinfo");
             if (userinfo) {
@@ -91,10 +112,16 @@ export default {
             } else {
               userinfo = res;
             }
-            wx.setStorageSync("userinfo", userinfo);
-            showSuccess("登录成功");
-            this.isLogin = true;
-            this.userinfo.nickName = "请完善信息";
+            const addInfo = await that.getAdditionalUserInfo(userinfo.openId);
+            console.log(addInfo);
+            if (addInfo.length !== 0) {
+              that.userinfo.nickName = userinfo.nickName;
+              Object.assign(userinfo, addInfo[0]);
+              that.login(userinfo);
+            } else {
+              that.login(userinfo);
+              that.userinfo.nickName = "请完善信息";
+            }
           },
           fail: err => {
             console.error(err);
@@ -113,7 +140,7 @@ export default {
     } else {
       this.isLogin = false;
     }
-    if (!userinfo.major || !userinfo.QQId || !userinfo.phone) {
+    if (!userinfo.QQId || !userinfo.phone) {
       this.userinfo.nickName = "请完善信息";
     } else {
       this.userinfo.nickName = userinfo.nickName;
