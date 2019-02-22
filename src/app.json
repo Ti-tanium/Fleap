@@ -11,12 +11,12 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#1296db",
+    "navigationBarBackgroundColor": "#3398da",
     "navigationBarTitleText": "ebook",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "selectedColor": "#1296db",
+    "selectedColor": "#3398da",
     "list": [
       {
         "pagePath": "pages/index/main",
