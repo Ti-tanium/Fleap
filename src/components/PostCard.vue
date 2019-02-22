@@ -1,60 +1,67 @@
 <template>
-<a :href="postDetailUrl">
-  <div class="PostCard-container">
-    <div class="body">
-      <div class="avatar">
-        <img :src="postList.avatarUrl" class="avatar-img">
-      </div>
-      <div class="content">
-        <div class="header">
-          <div class="nickName">{{postList.nickName}}</div>
-          <div class="price">¥{{postList.price}}</div>
+  <a :href="postDetailUrl">
+    <div class="PostCard-container">
+      <div class="body">
+        <div class="avatar">
+          <img :src="postList.avatarUrl" class="avatar-img">
         </div>
-        <div class="title">{{postList.title}}</div>
-        <div class="image-container">
-          <img :src="image" v-if="image" v-for="image in images" :key="index" class="item-image" @click.stop="previewImage(image,index)">
-        </div>
-        <div class="footer">
-          <div class="postTime">{{postList.postTime}}</div>
-          <div class="viewCount">
-            <img src="/static/images/icon/view.png" class="icon">
-            <div class="count">{{postList.viewCount}}</div>
+        <div class="content">
+          <div class="header">
+            <div class="nickName">{{postList.nickName}}</div>
+            <div class="price">¥{{postList.price}}</div>
+          </div>
+          <div class="title">{{postList.title}}</div>
+          <div class="image-container">
+            <img
+              :src="image"
+              v-if="image"
+              v-for="image in images"
+              :key="index"
+              class="item-image"
+              @click.stop="previewImage(image,index)"
+            >
+          </div>
+          <div class="footer">
+            <div class="postTime">{{postList.postTime}}</div>
+            <div class="viewCount">
+              <img src="/static/images/icon/view.png" class="icon">
+              <div class="count">{{postList.viewCount}}</div>
+            </div>
           </div>
         </div>
       </div>
+      <SplitLine></SplitLine>
     </div>
-    <SplitLine></SplitLine>
-  </div>
-</a>
+  </a>
 </template>
 
 <script>
-import SplitLine from '@/components/SplitLine'
+import SplitLine from "@/components/SplitLine";
 
 export default {
   components: {
     SplitLine
   },
-  props: ['postList'],
-  data () {
+  props: ["postList"],
+  data() {
     return {
-      images: this.postList.image.split(',')
-    }
+      images: this.postList.image ? this.postList.image.split(",") : ""
+    };
   },
   computed: {
-    postDetailUrl () {
-      return '/pages/postDetail/main?id=' + this.postList.id
+    postDetailUrl() {
+      return "/pages/postDetail/main?id=" + this.postList.id;
     }
   },
   methods: {
-    previewImage (image, index) {
+    previewImage(image, index) {
       wx.previewImage({
         urls: this.images, // 需要预览的图片链接列表,
         current: this.images[index]
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style>
