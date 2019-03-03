@@ -37,8 +37,17 @@ CREATE TABLE major(
 CREATE TABLE post_category(
     id INT auto_increment NOT NULL   COMMENT 'ID' ,
     name VARCHAR(32)    COMMENT '名称' ,
+    code_name VARCHAR(32)    COMMENT '代码名' ,
     PRIMARY KEY (id)
 ) COMMENT = '发布信息种类 '  CHARSET=utf8;
+
+insert into post_category(name,code_name) values ("教辅资料","textbook");
+insert into post_category(name,code_name) values ("日常用品","dailyuse");
+insert into post_category(name,code_name) values ("电子产品","electronics");
+insert into post_category(name,code_name) values ("盆栽","plant");
+insert into post_category(name,code_name) values ("服装","clothes");
+insert into post_category(name,code_name) values ("拼车","carshare");
+insert into post_category(name,code_name) values ("其他","other");
 
 CREATE TABLE record(
     id INT auto_increment NOT NULL   COMMENT 'ID' ,
