@@ -1,14 +1,8 @@
 <template>
   <div class="myPost-container">
-    <!-- <div class="postList" v-for="post in postList" :key="index"> -->
-      <checkbox-group @change="checkboxChange">
-        <label v-for="post in postList" :key="index" class="checkbox">
-          <checkbox
-            :name="completed" />
-          <PostCard :postList="post"></PostCard>
-        </label>
-      </checkbox-group>
-    <!-- </div> -->
+    <div class="postList" v-for="post in postList" :key="index">
+        <PostCard :postList="post" :complete="true"></PostCard>
+    </div>
   </div>
 </template>
 
@@ -63,10 +57,7 @@ export default {
 </script>
 
 <style>
-.checkbox{
-  display: flex;
-  align-items: center;
-  margin-left: 8rpx;
+.myPost-container{
+  background: #f2f2f2;
 }
-
 </style>

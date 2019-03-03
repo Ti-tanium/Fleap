@@ -1,3 +1,7 @@
 {
-  "navigationBarTitleText": "我的发布"
+  "navigationBarTitleText": "我的发布",
+  "usingComponents": {
+    "van-card":"/static/vant/card/index",
+    "van-button":"/static/vant/button/index"
+  }
 }

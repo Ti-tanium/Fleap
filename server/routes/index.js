@@ -46,4 +46,8 @@ router.get('/getadduserinfo', controllers.getadduserinfo)
 
 router.get('/getposts', controllers.getposts)
 
+router.get('/getmyposts', controllers.getmyposts)
+
+router.post('/sold', controllers.sold)
+
 module.exports = router
