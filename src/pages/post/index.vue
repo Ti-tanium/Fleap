@@ -141,6 +141,9 @@ export default {
     },
     async formSubmit(e) {
       var formInfo = e.target.value;
+
+      //将category的ID和服务器的ID对应起来
+      formInfo.category=parseInt(formInfo.category)+1;
       const time = formatTime(new Date());
       const userinfo = wx.getStorageSync("userinfo");
       wx.showLoading({
@@ -162,6 +165,7 @@ export default {
         postTime: time,
         location: ""
       });
+
       console.log("post data:", this.postInfo);
       try {
         await post(config.host + "/weapp/post", this.postInfo);
