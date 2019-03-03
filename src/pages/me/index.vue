@@ -192,18 +192,18 @@ export default {
   background: #ffffff;
   padding-top: 5px;
   padding-bottom: 5px;
-  height: 30px;
+  height: 48px;
 }
 .icon-img {
-  width: 36rpx;
-  height: 36rpx;
+  width: 48rpx;
+  height: 48rpx;
   align-self: center;
   margin-left: 20rpx;
 }
 .btn-text {
   margin-left: 20rpx;
-  font-size: 34rpx;
-  line-height: 30px;
+  font-size: 14px;
+  line-height: 48px;
 }
 .me-footer {
   margin-top: 20rpx;
