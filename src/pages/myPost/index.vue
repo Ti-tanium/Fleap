@@ -1,8 +1,14 @@
 <template>
   <div class="myPost-container">
-    <div class="postList" v-for="post in postList" :key="index">
-      <PostCard :postList="post"></PostCard>
-    </div>
+    <!-- <div class="postList" v-for="post in postList" :key="index"> -->
+      <checkbox-group @change="checkboxChange">
+        <label v-for="post in postList" :key="index" class="checkbox">
+          <checkbox
+            :name="completed" />
+          <PostCard :postList="post"></PostCard>
+        </label>
+      </checkbox-group>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -20,24 +26,28 @@ export default {
     }
   },
   mounted () {
-    this.getPostList()
+    this.getMyPosts()
   },
   methods: {
-    async getPostList () {
-      const userinfo = wx.getStorageSync('userinfo')
-      const openId = userinfo.openId
+    async getMyPosts() {
+      const userinfo = wx.getStorageSync("userinfo");
+      const openId = userinfo.openId;
       wx.showLoading({
-        title: '加载中...', // 提示的内容,
+        title: "加载中...", // 提示的内容,
         mask: true, // 显示透明蒙层，防止触摸穿透,
         success: res => {}
-      })
-      const postList = await get(config.host + '/weapp/postlist', {
-        category: 'all',
+      });
+      const postList = await get(config.getMyPostsUrl, {
         openId: openId
-      })
-      console.log(postList.data.list)
-      this.postList = postList.data.list
-      wx.hideLoading()
+      });
+      console.log("my posts:",postList.data.posts);
+      this.postList = postList.data.posts;
+      if(this.postList.length==0){
+        this.empty=true;
+      }else{
+        this.empty=false;
+      }
+      wx.hideLoading();
     }
   },
   onPullDownRefresh () {
@@ -53,4 +63,10 @@ export default {
 </script>
 
 <style>
+.checkbox{
+  display: flex;
+  align-items: center;
+  margin-left: 8rpx;
+}
+
 </style>
