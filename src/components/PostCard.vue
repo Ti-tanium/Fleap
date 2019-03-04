@@ -112,7 +112,9 @@ export default {
   padding: 16rpx 32rpx;
   font-size: 15px;
   color: #111;
-  margin-bottom: 8px;
+  margin: 8px;
+  border-radius: 5px;
+  box-shadow:2px 2px 5px #888888;
 }
 .body {
   display: flex;
