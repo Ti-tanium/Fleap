@@ -79,3 +79,22 @@ export function numberValidate (obj) {
   var reg = /^[0-9|.]*$/
   return reg.test(obj)
 }
+
+export function id2Category (id) {
+  switch (id) {
+    case 1:
+      return '教辅资料'
+    case 2:
+      return '日常用品'
+    case 3:
+      return '电子产品'
+    case 4:
+      return '盆栽'
+    case 5:
+      return '服装'
+    case 6:
+      return '拼车'
+    case 7:
+      return '其他'
+  }
+}
