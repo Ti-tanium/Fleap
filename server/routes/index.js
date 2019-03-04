@@ -50,4 +50,6 @@ router.post('/sold', controllers.sold)
 
 router.get('/collect', controllers.collect)
 
+router.get('/getmycollection', controllers.getmycollection)
+
 module.exports = router
