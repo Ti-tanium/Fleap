@@ -24,7 +24,7 @@
         <div class="postList" v-for="post in posts.near" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.near">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div>
       </van-tab>
@@ -32,7 +32,7 @@
         <div class="postList" v-for="post in posts.recommend" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.recommend">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div>
       </van-tab>
@@ -40,7 +40,7 @@
         <div class="postList" v-for="post in posts.textbook" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.textbook">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div>
       </van-tab>
@@ -48,7 +48,7 @@
         <div class="postList" v-for="post in posts.dailyuse" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.dailyuse">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div>
       </van-tab>
@@ -56,35 +56,35 @@
         <div class="postList" v-for="post in posts.electronics" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.electronics">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div></van-tab>
       <van-tab title="盆栽">        
         <div class="postList" v-for="post in posts.plant" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.plant">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div></van-tab>
       <van-tab title="服装">        
         <div class="postList" v-for="post in posts.clothes" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.clothes">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div></van-tab>
       <van-tab title="拼车">        
         <div class="postList" v-for="post in posts.carshare" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.carshare">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div></van-tab>
       <van-tab title="其他">        
         <div class="postList" v-for="post in posts.other" :key="index">
           <PostCard :postList='post' :complete="false"></PostCard>
         </div>
-        <div class="index-bottom" :hidden="posts.other">
+        <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
         </div></van-tab>
     </van-tabs>
