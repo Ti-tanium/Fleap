@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="post-body">
-      <div id="images-container" v-for="image in pictures" :key="index">
+      <div id="images-container" v-for="image in pictures" :key="index" :hidden="!image">
         <img :src="image"  @click.stop="previewImage(image,index)" id="image"/>
       </div>
       <div id="detail">{{postDetail.detail}}</div>
