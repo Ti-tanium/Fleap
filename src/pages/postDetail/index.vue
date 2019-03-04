@@ -1,50 +1,30 @@
 <template>
   <div class="postDetail-container">
-
-    <div class="head">
-      <div class="headtitle-favorite">
-        <div class="title">{{postDetail.title}}</div>
-        <div class="favorite">
-          <img src="/static/images/icon/favorite.png" class="favorite-img">
-          <div class="favorite-txt">收藏</div>
-        </div>
+    <div class="post-head">
+      <div id="title-container">
+        <div id="title">{{postDetail.title}}</div>
+        <img src="" alt="" id="collect">
       </div>
-      <div class="footer">
-        <div class="postTime">{{postDetail.postTime}}</div>
-        <div class="viewCount">浏览{{postDetail.viewCount}}人</div>
+      <div class="price-container">
+        <div id="price">{{postDetail.price}}</div>
+        <div id="postTime">{{postDetail.postTime}}</div>
+        <div id="viewCount">{{postDetail.viewCount}}</div>
+      </div>
+      <div class="category-container">
+        <!-- tag -->
       </div>
     </div>
+    <div class="post-body">
+      <div id="images-container">
 
-    <div class="content">
-
-
-      <div class="image-cell">
-        <div class="icon-container">
-          <img src="/static/images/icon/post.png" class="icon">
-        </div>
-        <div class="img-container">
-          <img :src="picture" class="item-image" v-if="picture" v-for="picture in pictures" :key="index" mode="aspectFill" @click="previewImage(pictrue,index)">
-        </div>
       </div>
-      <displayCell iconUrl="/static/images/icon/price.png" :content="postDetail.price"></displayCell>
-      <displayCell iconUrl="/static/images/icon/detail.png" :content="postDetail.detail"></displayCell>
-      <displayCell iconUrl="/static/images/icon/tag.png" content="#生活用品" :border="true"></displayCell>
+      <div id="detail">{{postDetail.detail}}</div>
     </div>
-
-    <!-- <div class="contact">
-      <displayCell iconUrl="/static/images/icon/qq.png" :content="postDetail.QQId" v-if="postDetail.QQId"></displayCell>
-      <displayCell iconUrl="/static/images/icon/" :content="postDetail.phoneNumber" v-if="postDetail.phoneNumber"></displayCell>
-    </div> -->
-
-    <div class="contact">
+    <div class="post-contact">
       <displayCell iconUrl="/static/images/icon/qq.png" :content="postDetail.QQId"></displayCell>
       <displayCell iconUrl="/static/images/icon/phone.png" :content="postDetail.phone"></displayCell>
     </div>
 
-
-    <div class="message">
-
-    </div>
   </div>
 </template>
 
