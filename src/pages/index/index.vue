@@ -201,16 +201,6 @@ export default {
       }
       wx.hideLoading();
     },
-    async getPostList () {
-      const postList = await get(config.host + '/weapp/postlist', {
-        category: 'all'
-      })
-      this.postList = postList.data.list
-      wx.hideLoading()
-      wx.stopPullDownRefresh()
-      console.log(this.postList.data.list)
-    },
-
     async getPosts(){
       const response=await get(config.getPostsUrl,{
           category:this.category,
