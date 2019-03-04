@@ -10,10 +10,10 @@ module.exports = async ctx => {
             posts = await mysql('post').select().where({sold: 0}).orderBy('id', 'desc').limit(count).offset(parseInt(start))
         } else if (category === 'near') {
             // TODO: calculate distance select ?
-            posts = {}
+            posts = []
         } else if (category === 'recommend') {
             // TODO: recommendation algorithm needed
-            posts = {}
+            posts = []
         } else {
             const categorysql = await mysql('post_category').select('id').where('code_name', category)
             const categoryId = categorysql[0].id
