@@ -210,9 +210,8 @@ export default {
       const posts=response.data.posts;
       console.log("/getPosts response:",posts);
       this.posts[this.category]=this.posts[this.category].concat(posts);
-      console.log("new:",this.posts["new"])
+      console.log("category:",this.category+".","posts:",this.posts[this.category]);
       this.postCount[this.category]+=posts.length;
-      console.log(this.postCount[this.category])
       wx.hideLoading();
       wx.stopPullDownRefresh();
     }
