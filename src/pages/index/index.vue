@@ -226,7 +226,7 @@ export default {
   },
   onShareAppMessage () {
     return {
-      title: '易书',
+      title: '蚤小跳',
       path: '/pages/index/main',
       success: res => {},
       fail: () => {},
