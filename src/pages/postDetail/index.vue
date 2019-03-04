@@ -81,11 +81,7 @@ export default {
       const postDetail = await get(config.host + '/weapp/postdetail', {
         itemId: this.itemId
       })
-      this.postDetail = Object.assign(postDetail.data, {
-        QQId: '113214214',
-        phone: '13711111111'
-      })
-      // this.postDetail = postDetail.data
+      this.postDetail = postDetail.data;
       this.pictures = this.postDetail.image.split(',')
       console.log('get post detail of id=' + this.itemId)
       console.log('post detail:', this.postDetail)
