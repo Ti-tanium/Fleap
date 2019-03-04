@@ -147,7 +147,6 @@ export default {
   },
   methods: {
     async onTabChange(e){
-      console.log("Tab changed:",e);
       this.activeTabIndex=e.target.index;
       switch(this.activeTabIndex){
         case 0:
@@ -208,7 +207,6 @@ export default {
           start:this.postCount[this.category]
       })
       const posts=response.data.posts;
-      console.log("/getPosts response:",posts);
       this.posts[this.category]=this.posts[this.category].concat(posts);
       console.log("category:",this.category+".","posts:",this.posts[this.category]);
       this.postCount[this.category]+=posts.length;
