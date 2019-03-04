@@ -36,8 +36,6 @@ router.post('/message', controllers.message.post)
 
 router.post('/post', controllers.post)
 
-router.get('/postlist', controllers.postlist)
-
 router.get('/postdetail', controllers.postdetail)
 
 router.post('/saveuserinfo', controllers.saveuserinfo)
