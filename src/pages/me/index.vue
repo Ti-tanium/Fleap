@@ -192,7 +192,7 @@ export default {
   background: #ffffff;
   padding-top: 5px;
   padding-bottom: 5px;
-  height: 48px;
+  height: 32px;
 }
 .icon-img {
   width: 48rpx;
@@ -203,7 +203,7 @@ export default {
 .btn-text {
   margin-left: 20rpx;
   font-size: 14px;
-  line-height: 48px;
+  line-height: 32px;
 }
 .me-footer {
   margin-top: 20rpx;
