@@ -48,4 +48,6 @@ router.get('/getmyposts', controllers.getmyposts)
 
 router.post('/sold', controllers.sold)
 
+router.get('/collect', controllers.collect)
+
 module.exports = router

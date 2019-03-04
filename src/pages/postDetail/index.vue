@@ -44,7 +44,7 @@ export default {
       itemId: '',
       postDetail: {},
       pictures: [],
-      collected:''
+      collected:false
     }
   },
   components: {
@@ -77,6 +77,16 @@ export default {
       this.pictures = this.postDetail.images.split(',')
       console.log('get post detail of id=' + this.itemId)
       console.log('post detail:', this.postDetail)
+
+      // get collect record
+      const userinfo=wx.getStorageSync('userinfo');
+      const openId=userinfo.openId
+      if(openId){
+        const response=await get(config.collectUrl,{openId:openId,id:this.postDetail.id})
+        console.log(response)
+        const collected=response.data.collected
+        this.collected=collected;
+      }
     },
     previewImage (image, index) {
       wx.previewImage({
