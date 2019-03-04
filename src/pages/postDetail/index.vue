@@ -1,22 +1,27 @@
 <template>
   <div class="postDetail-container">
     <div class="post-head">
-      <div id="title-container">
+      <div class="title-container">
         <div id="title">{{postDetail.title}}</div>
-        <img src="" alt="" id="collect">
+        <img src="/static/images/icon/icon_star.png" alt="" class="collect" @click="onCollect" :hidden="collected">
+        <img src="/static/images/icon/icon_star_fill.png" alt="" class="collect" @click="onCollect" :hidden="!collected" />
       </div>
+      <SplitLine></SplitLine>
       <div class="price-container">
-        <div id="price">{{postDetail.price}}</div>
-        <div id="postTime">{{postDetail.postTime}}</div>
-        <div id="viewCount">{{postDetail.viewCount}}</div>
+        <b id="dollar">
+          ￥<span id="number">{{postDetail.price}}</span>
+          <span id="postTime">发布时间:{{postDetail.postTime}}</span>
+          <span id="viewCount">浏览{{postDetail.viewCount}}</span>
+        </b>
       </div>
+
       <div class="category-container">
-        <!-- tag -->
+        <van-tag type="primary">{{category}}</van-tag>
       </div>
     </div>
     <div class="post-body">
-      <div id="images-container">
-
+      <div id="images-container" v-for="image in pictures" :key="index">
+        <img :src="image"  @click.stop="previewImage(image,index)" id="image"/>
       </div>
       <div id="detail">{{postDetail.detail}}</div>
     </div>
@@ -29,19 +34,26 @@
 </template>
 
 <script>
-import { get } from '@/utils/index'
+import { get,id2Category } from '@/utils/index'
 import config from '@/config'
 import displayCell from '@/components/displayCell'
+import SplitLine from '@/components/SplitLine'
 export default {
   data () {
     return {
       itemId: '',
       postDetail: {},
-      pictures: []
+      pictures: [],
+      collected:''
     }
   },
   components: {
     displayCell
+  },
+  computed:{
+    category(){
+      return id2Category(this.postDetail.category);
+    }
   },
   mounted () {
     this.itemId = this.$root.$mp.query.id
@@ -62,7 +74,7 @@ export default {
         itemId: this.itemId
       })
       this.postDetail = postDetail.data;
-      this.pictures = this.postDetail.image.split(',')
+      this.pictures = this.postDetail.images.split(',')
       console.log('get post detail of id=' + this.itemId)
       console.log('post detail:', this.postDetail)
     },
@@ -71,6 +83,9 @@ export default {
         urls: this.pictures, // 需要预览的图片链接列表,
         current: this.pictures[index]
       })
+    },
+    onCollect(){
+
     }
   }
 }
@@ -79,7 +94,67 @@ export default {
 <style>
 .postDetail-container {
   font-size: 15px;
-  background: #f2f2f2;
+  padding: 32rpx;
+  
+}
+.title-container{
+  display:flex;
+  flex-direction: row;
+  width: auto;
+  align-items: center;
+  justify-content: space-between;
+  
+
+}
+.price-container{
+  display: flex;
+  flex-direction: row;
+  color: #e74c3c;
+  margin: 16px 0;
+  }
+.category-container{
+  margin: 16px 0;
+}
+
+.post-body{
+  margin: 16px 0;
+}
+
+#dollar{
+  font-size: 14px;
+  height: 14px;
+  line-height: 14px;
+  width: 100%;  
+}
+#number{
+  font-size: 32px;
+}
+#viewCount{
+  margin-left: 32rpx;
+  color: #888;
+  font-size: 12px;
+}
+
+#postTime{
+  font-size: 12px;
+  color: #999;
+  margin-left: 32rpx;
+}
+
+#title{
+  font-size: 24px;
+  color: #344;
+}
+
+.collect{
+  width: 18px;
+  height: 18px;
+  padding-left: 32rpx;
+}
+
+#image{
+  width: 200rpx;
+  height: 200rpx;
 }
 
 </style>
