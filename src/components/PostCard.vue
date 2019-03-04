@@ -51,7 +51,7 @@ export default {
   props: ["postList","complete"],
   data() {
     return {
-      images: this.postList.image ? this.postList.image.split(",") : "",
+      images: this.postList.images ? this.postList.images.split(",") : "",
       sold:this.postList.sold==="0"?false:true
     };
   },
