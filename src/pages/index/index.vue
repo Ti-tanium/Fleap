@@ -145,6 +145,17 @@ export default {
     })
     this.getPosts()
   },
+  onReachBottom(){
+    console.log("scroll lower tricked.")
+    wx.showLoading({
+      title: '加载中...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+    this.getPosts()
+    wx.hideLoading();
+    wx.stopPullDownRefresh();
+  },
   methods: {
     async onTabChange(e){
       this.activeTabIndex=e.target.index;
