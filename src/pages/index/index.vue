@@ -11,26 +11,83 @@
 
     <Search></Search>
 
-    <van-tabs :active="activeTabIndex" @change="onTabChange">
-      <van-tab title="附近">附近</van-tab>
-      <van-tab title="推荐">推荐</van-tab>
-      <van-tab title="教材">教材</van-tab>
-      <van-tab title="日常用品">日常用品</van-tab>
-      <van-tab title="电子产品">电子产品</van-tab>
-      <van-tab title="盆栽">盆栽</van-tab>
-      <van-tab title="服装">服装</van-tab>
-      <van-tab title="拼车">拼车</van-tab>
-      <van-tab title="其他">其他</van-tab>
+    <van-tabs :active="activeTabIndex" @change="onTabChange" color="#3398da" :swipeable="true" animated>
+      <van-tab title="最新">
+        <div class="postList" v-for="post in posts.new" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.new">
+          暂无任何内容
+        </div>
+      </van-tab>
+      <van-tab title="附近">
+        <div class="postList" v-for="post in posts.near" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.near">
+          暂无任何内容
+        </div>
+      </van-tab>
+      <van-tab title="推荐">
+        <div class="postList" v-for="post in posts.recommend" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.recommend">
+          暂无任何内容
+        </div>
+      </van-tab>
+      <van-tab title="教材">
+        <div class="postList" v-for="post in posts.textbook" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.textbook">
+          暂无任何内容
+        </div>
+      </van-tab>
+      <van-tab title="日常用品">
+        <div class="postList" v-for="post in posts.dailyuse" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.dailyuse">
+          暂无任何内容
+        </div>
+      </van-tab>
+      <van-tab title="电子产品">        
+        <div class="postList" v-for="post in posts.electronics" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.electronics">
+          暂无任何内容
+        </div></van-tab>
+      <van-tab title="盆栽">        
+        <div class="postList" v-for="post in posts.plant" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.plant">
+          暂无任何内容
+        </div></van-tab>
+      <van-tab title="服装">        
+        <div class="postList" v-for="post in posts.clothes" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.clothes">
+          暂无任何内容
+        </div></van-tab>
+      <van-tab title="拼车">        
+        <div class="postList" v-for="post in posts.carshare" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.carshare">
+          暂无任何内容
+        </div></van-tab>
+      <van-tab title="其他">        
+        <div class="postList" v-for="post in posts.other" :key="index">
+          <PostCard :postList='post' :complete="false"></PostCard>
+        </div>
+        <div class="index-bottom" :hidden="posts.other">
+          暂无任何内容
+        </div></van-tab>
     </van-tabs>
-
-    <div class="postList" v-for="post in postList" :key="index">
-      <PostCard :postList='post'></PostCard>
-    </div>
-
-    <div class="index-bottom" :hidden="postList">
-        (ノ｀Д)ノ 什么内容都没有！
-    </div>
-
   </div>
 </template>
 
@@ -49,9 +106,35 @@ export default {
         '/static/images/csu/csu2.jpg',
         '/static/images/csu/csu3.jpg'
       ],
-      postList: {},
-      category: '',
-      activeTabIndex:''
+      category: 'new',
+      activeTabIndex:'',
+      postList:{
+      },
+      posts: {
+        new:[],
+        near:[],
+        recommend:[],
+        textbook:[],
+        dailyuse:[],
+        electronics:[],
+        plant:[],
+        clothes:[],
+        carshare:[],
+        other:[]
+      },
+      CountPerGet:20,
+      postCount:{
+        new:0,
+        near:0,
+        recommend:0,
+        textbook:0,
+        dailyuse:0,
+        electronics:0,
+        plant:0,
+        clothes:0,
+        carshare:0,
+        other:0
+      },
     }
   },
   mounted () {
@@ -60,18 +143,78 @@ export default {
       mask: true, // 显示透明蒙层，防止触摸穿透,
       success: res => {}
     })
-    this.getPostList()
+    this.getPosts()
   },
   methods: {
+    async onTabChange(e){
+      console.log("Tab changed:",e);
+      this.activeTabIndex=e.target.index;
+      switch(this.activeTabIndex){
+        case 0:
+        this.category="new"
+        break;
+        case 1:
+        this.category="near"
+        break;
+        case 2:
+        this.category="recommend"
+        break;
+        case 3:
+        this.category="textbook"
+        break;
+        case 4:
+        this.category="dailyuse"
+        break;
+        case 5:
+        this.category="electronics"
+        break;
+        case 6:
+        this.category="plant"
+        break;
+        case 7:
+        this.category="clothes"
+        break;
+        case 8:
+        this.category="carshare"
+        break;
+        case 9:
+        this.category="other"
+        break;
+      }
+      wx.showLoading({
+        title: '加载中...', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      if(this.postCount[this.category]===0){
+        await this.getPosts();
+      }
+      wx.hideLoading();
+    },
     async getPostList () {
       const postList = await get(config.host + '/weapp/postlist', {
         category: 'all'
       })
-
       this.postList = postList.data.list
       wx.hideLoading()
       wx.stopPullDownRefresh()
       console.log(this.postList.data.list)
+    },
+
+    async getPosts(){
+      const response=await get(config.getPostsUrl,{
+          category:this.category,
+          count:this.CountPerGet,
+          start:this.postCount[this.category]
+      })
+      const posts=response.data.posts;
+      console.log("/getPosts response:",posts);
+      this.posts[this.category]=this.posts[this.category].concat(posts);
+      console.log("new:",this.posts["new"])
+      this.postCount[this.category]+=posts.length;
+      console.log(this.postCount[this.category])
+      wx.hideLoading();
+      wx.stopPullDownRefresh();
     }
   },
   onPullDownRefresh () {
@@ -79,7 +222,7 @@ export default {
       title: '加载中...', // 提示的内容,
       mask: true, // 显示透明蒙层，防止触摸穿透,
       success: res => {
-        this.getPostList()
+        this.getPosts()
       }
     })
   },
@@ -91,9 +234,6 @@ export default {
       fail: () => {},
       complete: () => {}
     }
-  },
-  onTabChange(e){
-
   }
 }
 </script>
