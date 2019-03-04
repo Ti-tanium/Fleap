@@ -1,79 +1,81 @@
 {
-  "description": "项目配置文件。",
-  "setting": {
-    "urlCheck": false,
-    "es6": true,
-    "postcss": true,
-    "minified": true,
-    "newFeature": true
-  },
-  "miniprogramRoot": "dist/",
-  "qcloudRoot": "server/",
-  "compileType": "miniprogram",
-  "appid": "wx77ceeae018c3f9bc",
-  "projectname": "up",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "plugin": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "currentL": -1,
-      "list": []
-    },
-    "miniprogram": {
-      "current": 6,
-      "list": [
-        {
-          "id": -1,
-          "name": "profile",
-          "pathName": "pages/profile/main",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "post",
-          "pathName": "pages/post/main",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "index",
-          "pathName": "pages/index/main",
-          "query": ""
-        },
-        {
-          "id": 3,
-          "name": "postDetail",
-          "pathName": "pages/postDetail/main",
-          "query": "id=20"
-        },
-        {
-          "id": -1,
-          "name": "myFavorite",
-          "pathName": "pages/myFavorite/main",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "profile",
-          "pathName": "pages/profile/main",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "me",
-          "pathName": "pages/me/main"
-        }
-      ]
-    }
-  }
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"miniprogramRoot": "dist/",
+	"qcloudRoot": "server/",
+	"compileType": "miniprogram",
+	"appid": "wx77ceeae018c3f9bc",
+	"projectname": "up",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 3,
+			"list": [
+				{
+					"id": -1,
+					"name": "profile",
+					"pathName": "pages/profile/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "post",
+					"pathName": "pages/post/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/index/main",
+					"query": ""
+				},
+				{
+					"id": 3,
+					"name": "postDetail",
+					"pathName": "pages/postDetail/main",
+					"query": "id=5",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "myFavorite",
+					"pathName": "pages/myFavorite/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "profile",
+					"pathName": "pages/profile/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "me",
+					"pathName": "pages/me/main",
+					"query": ""
+				}
+			]
+		}
+	}
 }
