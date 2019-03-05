@@ -239,7 +239,7 @@ export default {
 
 <style>
 .profile-container {
-  background: #f2f2f2;
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -273,6 +273,9 @@ export default {
 .profile-cell-group {
   position: absolute;
   top: 440rpx;
+  background: #fff;
+  width: 100%;
+  padding: 32rpx;
 }
 .profile-footer {
   padding: 3px 40rpx 0 40rpx;
