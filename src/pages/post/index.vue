@@ -17,6 +17,7 @@
           @fail="onFail"
           @complete="onComplete"
           @preview="onPreview"
+          @remove="onRemove"
         >
           <text>+</text>
         </wux-upload>
@@ -235,6 +236,13 @@ export default {
         current: file.url,
         urls: fileList.map(n => n.url)
       });
+    },
+    onRemove(e){
+      console.log("onRemove")
+      console.log(e)
+       const { file, fileList,index } = e.target
+       this.fileList= fileList.filter((n) => n.uid !== file.uid);
+       this.uploadImageUrls.splice(index,1)
     }
   }
 };
