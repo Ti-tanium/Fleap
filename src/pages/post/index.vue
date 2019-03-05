@@ -18,7 +18,7 @@
           @complete="onComplete"
           @preview="onPreview"
         >
-          <text>Upload</text>
+          <text>+</text>
         </wux-upload>
       </div>
       <van-cell-group>
