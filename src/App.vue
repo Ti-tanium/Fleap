@@ -52,4 +52,9 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+page{
+  height: 100%;
+  background: #f2f2f2
+}
 </style>
