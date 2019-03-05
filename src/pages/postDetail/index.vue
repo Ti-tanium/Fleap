@@ -70,8 +70,12 @@ export default {
   },
   methods: {
     async getPostDetail () {
+      // acquire openid for view history data
+      const userinfo=wx.getStorageSync('userinfo');
+      const openId=userinfo.openId;
       const postDetail = await get(config.host + '/weapp/postdetail', {
-        itemId: this.itemId
+        itemId: this.itemId,
+        openId: openId
       })
       this.postDetail = postDetail.data;
       this.pictures = this.postDetail.images.split(',')
@@ -79,8 +83,6 @@ export default {
       console.log('post detail:', this.postDetail)
 
       // get collect record
-      const userinfo=wx.getStorageSync('userinfo');
-      const openId=userinfo.openId
       if(openId){
         const response=await get(config.collectUrl,{openId:openId,id:this.postDetail.id,action:"query"})
         console.log(response)
