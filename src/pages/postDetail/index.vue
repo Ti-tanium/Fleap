@@ -10,7 +10,7 @@
       <div class="price-container">
         <b id="dollar">
           ￥<span id="number">{{postDetail.price}}</span>
-          <span id="postTime">发布时间:{{postDetail.postTime}}</span>
+          <span id="postTime">{{postDetail.postTime}}</span>
           <span id="viewCount">浏览{{postDetail.viewCount}}</span>
         </b>
       </div>
@@ -183,7 +183,7 @@ export default {
   width: 100%;  
 }
 #number{
-  font-size: 32px;
+  font-size: 24px;
 }
 #viewCount{
   margin-left: 32rpx;
