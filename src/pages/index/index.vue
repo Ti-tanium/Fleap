@@ -9,7 +9,9 @@
         </block>
     </swiper>
 
-    <Search></Search>
+    <van-search id="search" placeholder="请输入搜索关键词" background="#fff" use-action-slot :value="keywords" @search="onSearch">
+       <view slot="action" @click="onSearch">搜索</view>
+    </van-search>
 
     <van-tabs :active="activeTabIndex" @change="onTabChange" color="#3398da" :swipeable="true" animated>
       <van-tab title="最新">
@@ -110,6 +112,7 @@ export default {
       activeTabIndex:'',
       postList:{
       },
+      keywords:'',
       posts: {
         new:[],
         near:[],
@@ -157,6 +160,9 @@ export default {
     wx.stopPullDownRefresh();
   },
   methods: {
+    onSearch(){
+      //TODO:search code
+    },
     async onTabChange(e){
       this.activeTabIndex=e.target.index;
       switch(this.activeTabIndex){
@@ -260,5 +266,9 @@ swiper-item {
   color: #888;
   text-align: center;
 }
+.van-cell{
+  background-color: #f2f2f2;
+}
+
 </style>
 
