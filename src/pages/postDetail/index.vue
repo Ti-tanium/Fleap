@@ -59,6 +59,9 @@ export default {
     this.itemId = this.$root.$mp.query.id
     this.getPostDetail()
   },
+  onLoad(){
+    Object.assign(this, this.$options.data());
+  },
   onShareAppMessage () {
     return {
       title: this.postDetail.title,
