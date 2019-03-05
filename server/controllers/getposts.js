@@ -7,7 +7,8 @@ module.exports = async ctx => {
     try {
         if (category === 'new') {
             // latest posts
-            posts = await mysql('post').select().where({sold: 0}).orderBy('id', 'desc').limit(count).offset(parseInt(start))
+            posts = await mysql('post').select().where({sold: 0}).orderBy('id', 'desc').limit(count).offset(0)
+            console.log(posts)
         } else if (category === 'near') {
             // TODO: calculate distance select ?
             posts = []
