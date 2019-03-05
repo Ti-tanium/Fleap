@@ -1,9 +1,15 @@
 const { mysql } = require('../qcloud')
 
 module.exports = async ctx => {
-    const { itemId } = ctx.request.query
-    console.log('itemId:', itemId)
+    // TODO: 更新record表，传入用户OpenId，及postID，插入record
+    // 对于游客可以免除这一步
+    const { itemId, openId } = ctx.request.query
+    console.log('itemId:', itemId, 'openId:', openId)
     try {
+        if (openId) {
+            await mysql('record').insert({type: 1, openId: openId, postId: itemId})
+            console.log('view history added:' + openId + '&' + itemId)
+        }
         const postDetail = await mysql('post')
         .select('*')
         .where('id', itemId)
