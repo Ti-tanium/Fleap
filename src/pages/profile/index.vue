@@ -16,7 +16,7 @@
       <form @submit="onSaveChange">
         <van-cell-group>
           <picker @change="MajorPickerChange" :value="index" :range="majorArray">
-            <van-field :value="major" label="专业:" name="major" placeholder="请选择专业类别"/>
+            <van-field :value="major" label="专业:" name="major" placeholder="请选择专业类别" disabled/>
           </picker>
           <van-field
             :value="QQId"

@@ -2,7 +2,7 @@
   <div class="post-container">
     <form @submit="formSubmit">
       <picker @change="bindPickerChange" :value="pickerIndex" name="category" :range="options">
-        <van-field label="类别:" :value="category" placeholder="请选择类别"></van-field>
+        <van-field label="类别:" :value="category" placeholder="请选择类别" disabled></van-field>
       </picker>
       <div class="post-upload">
         <wux-upload
