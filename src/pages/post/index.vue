@@ -50,9 +50,6 @@
           :error-message="detailErrorMessage"
           @change="onDetailChange"
         />
-        <van-cell title="位置" :center="true" id="location-cell">
-          <van-switch :checked="locationChecked" size="24px" @change="onSwitchChange"></van-switch>
-        </van-cell>
       </van-cell-group>
       <button class="btn" formType="submit">发布</button>
     </form>
@@ -94,9 +91,7 @@ export default {
       pickerIndex: "",
       imageUrl: "",
       userinfo: "",
-      locationChecked: false,
-      latitude: 0,
-      longitude: 0
+      locationChecked: false
     };
   },
   computed: {
@@ -117,35 +112,6 @@ export default {
     }
   },
   methods: {
-    onSwitchChange() {
-      const that = this;
-      this.locationChecked = !this.locationChecked;
-      if (this.locationChecked) {
-        //TODO: 获取地理位置信息，若是已有则不获取
-        wx.getSetting({
-          success(res) {
-            if (!res.authSetting["scope.userLocation"]) {
-              wx.authorize({
-                scope: "scope.userLocation",
-                success() {
-                  //同意获取地理位置
-                  wx.getLocation({
-                    type: "wgs84",
-                    success(res) {
-                      that.latitude = res.latitude;
-                      that.longitude = res.longitude;
-                    }
-                  });
-                },
-                fail() {
-                  console.log("failed to get location information");
-                }
-              });
-            }
-          }
-        });
-      }
-    },
     bindPickerChange(e) {
       console.log(e);
       this.pickerIndex = e.target.value;
@@ -191,8 +157,6 @@ export default {
         return;
       }
 
-      console.log("latitude:", this.latitude, "longitude:", this.longitude);
-
       var formInfo = e.target.value;
       //将category的ID和服务器的ID对应起来
       formInfo.category = parseInt(formInfo.category) + 1;
@@ -210,11 +174,16 @@ export default {
         return;
       }
 
+      // get location
+      const latitude = wx.getStorageSync("latitude");
+      const longitude = wx.getStorageSync("longitude");
+      console.log("latitude:", latitude, "longitude:", longitude);
+
       Object.assign(this.postInfo, formInfo, {
         openId: userinfo.openId,
         images: this.uploadImageUrls.join(","),
         postTime: time,
-        location: this.latitude + "," + this.longitude
+        location: latitude + "," + longitude
       });
 
       console.log("post data:", this.postInfo);
