@@ -54,7 +54,7 @@
 					"id": 3,
 					"name": "postDetail",
 					"pathName": "pages/postDetail/main",
-					"query": "id=5",
+					"query": "id=32",
 					"scene": null
 				},
 				{
