@@ -231,7 +231,8 @@ export default {
 
 <style>
 .post-upload {
-  margin: 32rpx 40rpx;
+  padding: 32rpx 40rpx;
+  background: #fff;
 }
 #post-category-picker {
   display: flex;
