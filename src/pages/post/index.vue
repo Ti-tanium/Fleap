@@ -11,7 +11,7 @@
           name="file"
           count="9"
           max="9"
-          compressed="true"
+          :sizeType="['compressed']"
           :url="getUploadUrl"
           @success="onSuccess"
           @fail="onFail"
@@ -68,6 +68,7 @@ import config from "@/config";
 export default {
   data() {
     return {
+      sizeType:['compressed'],
       postInfo: {},
       detail: "",
       detailErrorMessage: "",
@@ -103,7 +104,6 @@ export default {
     this.userinfo=userinfo;
   },
   onShow(){
-    console.log(this.userinfo.openId)
     if (!this.userinfo.openId) {
       showModal("提示", "请先登录");
     } else if (!this.userinfo.phone || !this.userinfo.QQId) {
