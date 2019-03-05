@@ -143,6 +143,8 @@ export default {
       this.detail = "";
       this.category = "";
       //TODO:reset picture
+      this.fileList=[];
+      this.uploadImageUrls=[];
       console.log("reset form and picture");
     },
     async formSubmit(e) {
