@@ -152,7 +152,7 @@ export default {
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
     });
-    this.getPosts()
+    this.getPosts("Replace")
     wx.hideLoading();
     wx.stopPullDownRefresh();
   },
@@ -201,17 +201,23 @@ export default {
       }
       wx.hideLoading();
     },
-    async getPosts(){
+    async getPosts(actioin){
       const response=await get(config.getPostsUrl,{
           category:this.category,
           count:this.CountPerGet,
           start:this.postCount[this.category]
       })
       const posts=response.data.posts;
-      this.posts[this.category]=this.posts[this.category].concat(posts);
       console.log("category:",this.category+".","posts:",this.posts[this.category]);
-      console
-      this.postCount[this.category]+=posts.length;
+      console.log("post count before:",this.postCount[this.category])
+      if(actioin==="Replace"&&this.category=="new"){
+        this.posts[this.category]=posts;
+        this.postCount[this.category]=posts.length;
+      }else{
+        this.posts[this.category]=this.posts[this.category].concat(posts);
+        this.postCount[this.category]+=posts.length;
+      }
+      console.log("post count after:",this.postCount[this.category])
       wx.hideLoading();
       wx.stopPullDownRefresh();
     }
@@ -221,7 +227,7 @@ export default {
       title: '加载中...', // 提示的内容,
       mask: true, // 显示透明蒙层，防止触摸穿透,
       success: res => {
-        this.getPosts()
+        this.getPosts("Replace")
       }
     })
   },
