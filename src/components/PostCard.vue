@@ -176,5 +176,6 @@ export default {
   margin-top: 5px;
   margin-bottom: 5px;
   background: #f2f2f2;
+  border-radius: 5px;
 }
 </style>
