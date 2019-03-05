@@ -97,12 +97,13 @@ export default {
       return config.uploadUrl;
     }
   },
-  mounted() {
-    console.log("post page showed");
+  onLoad() {
+    console.log("post page loaded");
     const userinfo = wx.getStorageSync("userinfo");
     this.userinfo=userinfo;
   },
   onShow(){
+    console.log(this.userinfo.openId)
     if (!this.userinfo.openId) {
       showModal("提示", "请先登录");
     } else if (!this.userinfo.phone || !this.userinfo.QQId) {
