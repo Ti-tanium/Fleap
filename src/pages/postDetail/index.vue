@@ -130,7 +130,10 @@ export default {
 .postDetail-container {
   font-size: 15px;
   padding: 32rpx;
-  
+  background: #fff;
+  border-radius: 5px;
+  box-shadow:2px 2px 5px #888888;
+  margin: 8px;
 }
 .title-container{
   display:flex;
