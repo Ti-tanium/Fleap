@@ -88,7 +88,8 @@ export default {
         "其他"
       ],
       pickerIndex: "",
-      imageUrl: ""
+      imageUrl: "",
+      userinfo:''
     };
   },
   computed: {
@@ -96,12 +97,15 @@ export default {
       return config.uploadUrl;
     }
   },
-  onShow() {
+  mounted() {
     console.log("post page showed");
     const userinfo = wx.getStorageSync("userinfo");
-    if (!userinfo.openId) {
+    this.userinfo=userinfo;
+  },
+  onShow(){
+    if (!this.userinfo.openId) {
       showModal("提示", "请先登录");
-    } else if (!userinfo.phone || !userinfo.QQId) {
+    } else if (!this.userinfo.phone || !this.userinfo.QQId) {
       showModal("提示", "请先完善信息");
     }
   },
@@ -140,8 +144,14 @@ export default {
       console.log("reset form and picture");
     },
     async formSubmit(e) {
+      if (!this.userinfo.openId) {
+        showModal("提示", "请先登录");
+        return;
+      } else if (!this.userinfo.phone || !this.userinfo.QQId) {
+        showModal("提示", "请先完善信息");
+        return;
+      }
       var formInfo = e.target.value;
-
       //将category的ID和服务器的ID对应起来
       formInfo.category=parseInt(formInfo.category)+1;
       const time = formatTime(new Date());
