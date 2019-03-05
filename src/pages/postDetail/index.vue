@@ -18,10 +18,11 @@
       <div class="category-container">
         <van-tag type="primary">{{category}}</van-tag>
       </div>
+
     </div>
     <div class="post-body">
-      <div id="images-container" v-for="image in pictures" :key="index" :hidden="!image">
-        <img :src="image"  @click.stop="previewImage(image,index)" id="image"/>
+      <div id="images-container">
+        <img :src="image"  @click.stop="previewImage(image,index)" id="image" v-for="image in pictures" :key="index" :hidden="!image"/>
       </div>
       <div id="detail">{{postDetail.detail}}</div>
     </div>
@@ -149,6 +150,18 @@ export default {
   
 
 }
+
+#images-container{
+  display: flex;
+  flex-flow: wrap;
+}
+#image{
+  width: 180rpx;
+  height: 180rpx;
+  margin: 4px;
+  border-radius: 5px;
+}
+
 .price-container{
   display: flex;
   flex-direction: row;
@@ -195,10 +208,6 @@ export default {
   padding-left: 32rpx;
 }
 
-#image{
-  width: 200rpx;
-  height: 200rpx;
-  border-radius: 5px;
-}
+
 
 </style>
