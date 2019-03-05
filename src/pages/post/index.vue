@@ -49,8 +49,10 @@
           placeholder="200字以内~"
           :error-message="detailErrorMessage"
           @change="onDetailChange"
-          :border="false"
         />
+        <van-cell title="位置" :center="true" id="location-cell">
+          <van-switch :checked="locationChecked" size="24px" @change="onSwitchChange"></van-switch>
+        </van-cell>
       </van-cell-group>
       <button class="btn" formType="submit">发布</button>
     </form>
@@ -69,7 +71,7 @@ import config from "@/config";
 export default {
   data() {
     return {
-      sizeType:['compressed'],
+      sizeType: ["compressed"],
       postInfo: {},
       detail: "",
       detailErrorMessage: "",
@@ -91,7 +93,10 @@ export default {
       ],
       pickerIndex: "",
       imageUrl: "",
-      userinfo:''
+      userinfo: "",
+      locationChecked: false,
+      latitude: 0,
+      longitude: 0
     };
   },
   computed: {
@@ -102,9 +107,9 @@ export default {
   onLoad() {
     console.log("post page loaded");
     const userinfo = wx.getStorageSync("userinfo");
-    this.userinfo=userinfo;
+    this.userinfo = userinfo;
   },
-  onShow(){
+  onShow() {
     if (!this.userinfo.openId) {
       showModal("提示", "请先登录");
     } else if (!this.userinfo.phone || !this.userinfo.QQId) {
@@ -112,6 +117,35 @@ export default {
     }
   },
   methods: {
+    onSwitchChange() {
+      const that = this;
+      this.locationChecked = !this.locationChecked;
+      if (this.locationChecked) {
+        //TODO: 获取地理位置信息，若是已有则不获取
+        wx.getSetting({
+          success(res) {
+            if (!res.authSetting["scope.userLocation"]) {
+              wx.authorize({
+                scope: "scope.userLocation",
+                success() {
+                  //同意获取地理位置
+                  wx.getLocation({
+                    type: "wgs84",
+                    success(res) {
+                      that.latitude = res.latitude;
+                      that.longitude = res.longitude;
+                    }
+                  });
+                },
+                fail() {
+                  console.log("failed to get location information");
+                }
+              });
+            }
+          }
+        });
+      }
+    },
     bindPickerChange(e) {
       console.log(e);
       this.pickerIndex = e.target.value;
@@ -142,12 +176,13 @@ export default {
       this.title = "";
       this.detail = "";
       this.category = "";
-      //TODO:reset picture
-      this.fileList=[];
-      this.uploadImageUrls=[];
+      //TODO: cannot remove preview picture(thumb picture)
+      this.fileList = [];
+      this.uploadImageUrls = [];
       console.log("reset form and picture");
     },
     async formSubmit(e) {
+      const that = this;
       if (!this.userinfo.openId) {
         showModal("提示", "请先登录");
         return;
@@ -155,9 +190,12 @@ export default {
         showModal("提示", "请先完善信息");
         return;
       }
+
+      console.log("latitude:", this.latitude, "longitude:", this.longitude);
+
       var formInfo = e.target.value;
       //将category的ID和服务器的ID对应起来
-      formInfo.category=parseInt(formInfo.category)+1;
+      formInfo.category = parseInt(formInfo.category) + 1;
       const time = formatTime(new Date());
       const userinfo = wx.getStorageSync("userinfo");
       wx.showLoading({
@@ -172,12 +210,11 @@ export default {
         return;
       }
 
-      //TODO: need to add location information here
       Object.assign(this.postInfo, formInfo, {
         openId: userinfo.openId,
         images: this.uploadImageUrls.join(","),
         postTime: time,
-        location: ""
+        location: this.latitude + "," + this.longitude
       });
 
       console.log("post data:", this.postInfo);
@@ -239,12 +276,12 @@ export default {
         urls: fileList.map(n => n.url)
       });
     },
-    onRemove(e){
-      console.log("onRemove")
-      console.log(e)
-       const { file, fileList,index } = e.target
-       this.fileList= fileList.filter((n) => n.uid !== file.uid);
-       this.uploadImageUrls.splice(index,1)
+    onRemove(e) {
+      console.log("onRemove");
+      console.log(e);
+      const { file, fileList, index } = e.target;
+      this.fileList = fileList.filter(n => n.uid !== file.uid);
+      this.uploadImageUrls.splice(index, 1);
     }
   }
 };

@@ -37,5 +37,10 @@
         "selectedIconPath": "static/images/icon/me-active.png"
       }
     ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于给您推荐附近的发布信息"
+    }
   }
 }
