@@ -195,6 +195,7 @@ export default {
 #image{
   width: 200rpx;
   height: 200rpx;
+  border-radius: 5px;
 }
 
 </style>
