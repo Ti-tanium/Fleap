@@ -149,6 +149,7 @@ export default {
       success: res => {}
     })
     this.getPosts()
+    wx.hideLoading();
   },
   onReachBottom(){
     console.log("scroll lower tricked.")
@@ -274,6 +275,7 @@ export default {
       success :res => {
         this.posts[this.category]=[]
         this.getPosts("Replace")
+        wx.hideLoading();
       }
     })
 
