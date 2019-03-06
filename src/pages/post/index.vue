@@ -101,6 +101,28 @@ export default {
   },
   onLoad() {
     console.log("post page loaded");
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting["scope.userLocation"]) {
+          wx.authorize({
+            scope: "scope.userLocation",
+            success() {
+              //同意获取地理位置
+              wx.getLocation({
+                type: "wgs84",
+                success(res) {
+                  wx.setStorageSync("latitude", res.latitude);
+                  wx.setStorageSync("longitude", res.longitude);
+                }
+              });
+            },
+            fail() {
+              console.log("failed to get location information");
+            }
+          });
+        }
+      }
+    });
     const userinfo = wx.getStorageSync("userinfo");
     this.userinfo = userinfo;
   },
