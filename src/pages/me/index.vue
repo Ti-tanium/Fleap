@@ -32,7 +32,13 @@
         </div>
       </a>
     </div>
-    <button class="btn" v-if="!isLogin" open-type="getUserInfo" lang="zh_CN" @click="getUserInfo">登录</button>
+    <button
+      class="btn"
+      v-if="!isLogin"
+      open-type="getUserInfo"
+      lang="zh_CN"
+      @getuserinfo="getUserInfo"
+    >登录</button>
     <button class="red-btn" @click="logout" v-if="isLogin">退出当前账号</button>
   </div>
 </template>
