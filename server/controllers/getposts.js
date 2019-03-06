@@ -34,6 +34,7 @@ module.exports = async ctx => {
         } else if (category === 'near') {
             posts = await mysql('post')
                 .select()
+                .where({ sold: 0 })
                 .whereNotNull('latitude')
                 .whereBetween('latitude', [lat - 1, lat + 1])
                 .whereBetween('longitude', [lon - 1, lon + 1])
@@ -55,7 +56,7 @@ module.exports = async ctx => {
             if (openId) {
                 const major = await mysql('user')
                     .select('major')
-                    .where({ openId: openId })
+                    .where({ openId: openId, sold: 0 })
                 posts = await mysql('post')
                     .join('user', 'post.openId', '=', 'user.openId')
                     .select('post.*')
