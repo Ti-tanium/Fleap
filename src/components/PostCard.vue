@@ -9,6 +9,7 @@
           <div class="header">
             <div class="nickName">{{postList.nickName}}</div>
             <div class="price">¥{{postList.price}}</div>
+            <div class="location" :hidden="!location">{{postList.distance}}km</div>
           </div>
           <div class="title">{{postList.title}}</div>
           <div class="image-container">
@@ -44,7 +45,7 @@ export default {
   components: {
     SplitLine
   },
-  props: ["postList", "complete"],
+  props: ["postList", "complete", "location"],
   data() {
     return {
       images: this.postList.images ? this.postList.images.split(",") : "",
@@ -162,7 +163,10 @@ export default {
   justify-content: space-between;
 }
 .price {
-  color: #333;
+  color: #e74c3c;
+}
+.location {
+  color: #888;
 }
 .image-container {
   display: flex;

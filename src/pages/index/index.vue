@@ -24,7 +24,7 @@
       </van-tab>
       <van-tab title="附近">
         <div class="postList" v-for="post in posts.near" :key="index">
-          <PostCard :postList='post' :complete="false"></PostCard>
+          <PostCard :postList='post' :complete="false" :location="true"></PostCard>
         </div>
         <div class="index-bottom" :hidden="postCount[category]!==0">
           暂无任何内容
