@@ -89,7 +89,7 @@ module.exports = async ctx => {
                                   lon,
                                   posts[i].latitude,
                                   posts[i].longitude
-                              )
+                              ).toFixed(2)
                             : null
                 })
             } catch (e) {
