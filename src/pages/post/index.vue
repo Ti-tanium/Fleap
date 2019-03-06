@@ -89,9 +89,7 @@ export default {
         "其他"
       ],
       pickerIndex: "",
-      imageUrl: "",
-      userinfo: "",
-      locationChecked: false
+      imageUrl: ""
     };
   },
   computed: {
@@ -123,13 +121,12 @@ export default {
         }
       }
     });
-    const userinfo = wx.getStorageSync("userinfo");
-    this.userinfo = userinfo;
   },
   onShow() {
-    if (!this.userinfo.openId) {
+    const userinfo = wx.getStorageSync("userinfo");
+    if (!userinfo.openId) {
       showModal("提示", "请先登录");
-    } else if (!this.userinfo.phone || !this.userinfo.QQId) {
+    } else if (!userinfo.phone || !userinfo.QQId) {
       showModal("提示", "请先完善信息");
     }
   },
@@ -171,10 +168,11 @@ export default {
     },
     async formSubmit(e) {
       const that = this;
-      if (!this.userinfo.openId) {
+      const userinfo = wx.getStorageSync("userinfo");
+      if (!userinfo.openId) {
         showModal("提示", "请先登录");
         return;
-      } else if (!this.userinfo.phone || !this.userinfo.QQId) {
+      } else if (!userinfo.phone || !userinfo.QQId) {
         showModal("提示", "请先完善信息");
         return;
       }
