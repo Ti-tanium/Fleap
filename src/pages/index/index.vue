@@ -98,7 +98,7 @@ import Search from '@/components/Search'
 import PostCard from '@/components/PostCard'
 import SplitLine from '@/components/SplitLine'
 import config from '@/config'
-import { get } from '@/utils/index'
+import { get, showModal } from '@/utils/index'
 export default {
   components: { Search, SplitLine, PostCard },
   data () {
@@ -198,6 +198,32 @@ export default {
         this.category="other"
         break;
       }
+      if(this.category==="near"){
+        wx.getSetting({
+          success(res) {
+            if (!res.authSetting["scope.userLocation"]) {
+              wx.authorize({
+                scope: "scope.userLocation",
+                success() {
+                  //同意获取地理位置
+                  wx.getLocation({
+                    type: "wgs84",
+                    success(res) {
+                      wx.setStorageSync("latitude", res.latitude);
+                      wx.setStorageSync("longitude", res.longitude);
+                    }
+                  });
+                },
+                fail() {
+                  console.log("failed to get location information");
+                  showModal("提示","查看附近信息需要进行地理位置授权")
+                  wx.hideLoading();
+                }
+              });
+            }
+          }
+        });
+      }
       wx.showLoading({
         title: '加载中...', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,
@@ -209,10 +235,14 @@ export default {
       wx.hideLoading();
     },
     async getPosts(actioin){
+      const latitude = wx.getStorageSync('latitude');
+      const longitude = wx.getStorageSync('longitude');
       const response=await get(config.getPostsUrl,{
           category:this.category,
           count:this.CountPerGet,
-          start:this.postCount[this.category]
+          start:this.postCount[this.category],
+          latitude:latitude?latitude:null,
+          longitude:longitude?longitude:null
       })
       const posts=response.data.posts;
       console.log("category:",this.category+".","posts:",this.posts[this.category]);

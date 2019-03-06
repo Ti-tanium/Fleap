@@ -181,7 +181,7 @@ export default {
       //将category的ID和服务器的ID对应起来
       formInfo.category = parseInt(formInfo.category) + 1;
       const time = formatTime(new Date());
-      const userinfo = wx.getStorageSync("userinfo");
+
       wx.showLoading({
         title: "上传中...", // 提示的内容,
         mask: true, // 显示透明蒙层，防止触摸穿透,
