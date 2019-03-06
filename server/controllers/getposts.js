@@ -56,10 +56,11 @@ module.exports = async ctx => {
             if (openId) {
                 const major = await mysql('user')
                     .select('major')
-                    .where({ openId: openId, sold: 0 })
+                    .where({ openId: openId })
                 posts = await mysql('post')
                     .join('user', 'post.openId', '=', 'user.openId')
                     .select('post.*')
+                    .where({ sold: 0 })
                     .where('user.major', major[0].major)
                     .limit(count)
                     .offset(parseInt(start))
