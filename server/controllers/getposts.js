@@ -2,29 +2,55 @@ const { mysql } = require('../qcloud')
 module.exports = async ctx => {
     const { category, count, start } = ctx.request.query
 
-    console.log('requesting category:' + category + ' for ' + count + ' posts' + ' start at:' + start)
+    console.log(
+        'requesting category:' +
+            category +
+            ' for ' +
+            count +
+            ' posts' +
+            ' start at:' +
+            start
+    )
     let posts
     try {
         if (category === 'new') {
             // latest posts
-            posts = await mysql('post').select().where({sold: 0}).orderBy('id', 'desc').limit(count).offset(0)
+            posts = await mysql('post')
+                .select()
+                .where({ sold: 0 })
+                .orderBy('id', 'desc')
+                .limit(count)
+                .offset(0)
             console.log(posts)
         } else if (category === 'near') {
             // TODO: calculate distance select ?
+            const postsWithLocation = await mysql('post')
+                .select()
+                .whereNotNull('location')
+                .limit(count)
+                .offset(0)
             posts = []
         } else if (category === 'recommend') {
             // TODO: recommendation algorithm needed
             posts = []
         } else {
-            const categorysql = await mysql('post_category').select('id').where('code_name', category)
+            const categorysql = await mysql('post_category')
+                .select('id')
+                .where('code_name', category)
             const categoryId = categorysql[0].id
             console.log('category id:', categoryId)
-            posts = await mysql('post').select().where({sold: 0, category: categoryId}).limit(count).offset(parseInt(start))
+            posts = await mysql('post')
+                .select()
+                .where({ sold: 0, category: categoryId })
+                .limit(count)
+                .offset(parseInt(start))
         }
         // get avatar and nickname
         for (var i = 0; i < posts.length; i++) {
             try {
-                var userinfo = await mysql('user').select('nickName', 'avatarUrl').where('openId', posts[i].openId)
+                var userinfo = await mysql('user')
+                    .select('nickName', 'avatarUrl')
+                    .where('openId', posts[i].openId)
                 Object.assign(posts[i], userinfo[0])
             } catch (e) {
                 ctx.state = {
