@@ -52,4 +52,6 @@ router.get('/collect', controllers.collect)
 
 router.get('/getmycollection', controllers.getmycollection)
 
+router.get('/search', controllers.search)
+
 module.exports = router
