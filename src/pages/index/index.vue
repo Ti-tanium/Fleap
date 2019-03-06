@@ -140,7 +140,8 @@ export default {
       },
     }
   },
-  mounted () {
+  onLoad () {
+    console.log("index loaded");
     wx.showLoading({
       title: '加载中...', // 提示的内容,
       mask: true, // 显示透明蒙层，防止触摸穿透,
@@ -229,13 +230,16 @@ export default {
     }
   },
   onPullDownRefresh () {
+    var that=this;
     wx.showLoading({
       title: '加载中...', // 提示的内容,
       mask: true, // 显示透明蒙层，防止触摸穿透,
-      success: res => {
+      success :res => {
+        this.posts[this.category]=[]
         this.getPosts("Replace")
       }
     })
+
   },
   onShareAppMessage () {
     return {
