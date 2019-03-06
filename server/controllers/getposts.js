@@ -29,7 +29,7 @@ module.exports = async ctx => {
                 .where({ sold: 0 })
                 .orderBy('id', 'desc')
                 .limit(count)
-                .offset(0)
+                .offset(parseInt(start))
             console.log(posts)
         } else if (category === 'near') {
             posts = await mysql('post')

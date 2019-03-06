@@ -158,7 +158,7 @@ export default {
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
     });
-    this.getPosts("Replace")
+    this.loadmore()
     wx.hideLoading();
     wx.stopPullDownRefresh();
   },
@@ -241,7 +241,27 @@ export default {
       }
       wx.hideLoading();
     },
-    async getPosts(actioin){
+    async getPosts(){
+      const latitude = wx.getStorageSync('latitude');
+      const longitude = wx.getStorageSync('longitude');
+      const response=await get(config.getPostsUrl,{
+          category:this.category,
+          count:this.CountPerGet,
+          start:0,
+          latitude:latitude?latitude:null,
+          longitude:longitude?longitude:null,
+          openId:this.userinfo.openId?this.userinfo.openId:null
+      })
+      const posts=response.data.posts;
+      console.log("category:",this.category+".","posts:",this.posts[this.category]);
+      console.log("post count before:",this.postCount[this.category])
+      this.posts[this.category]=posts;
+      this.postCount[this.category]=posts.length;
+      console.log("post count after:",this.postCount[this.category])
+      wx.hideLoading();
+      wx.stopPullDownRefresh();
+    },
+    async loadmore(){
       const latitude = wx.getStorageSync('latitude');
       const longitude = wx.getStorageSync('longitude');
       const response=await get(config.getPostsUrl,{
@@ -255,13 +275,8 @@ export default {
       const posts=response.data.posts;
       console.log("category:",this.category+".","posts:",this.posts[this.category]);
       console.log("post count before:",this.postCount[this.category])
-      if(actioin==="Replace"&&this.category=="new"){
-        this.posts[this.category]=posts;
-        this.postCount[this.category]=posts.length;
-      }else{
-        this.posts[this.category]=this.posts[this.category].concat(posts);
-        this.postCount[this.category]+=posts.length;
-      }
+      this.posts[this.category]=this.posts[this.category].concat(posts);
+      this.postCount[this.category]+=posts.length;
       console.log("post count after:",this.postCount[this.category])
       wx.hideLoading();
       wx.stopPullDownRefresh();
@@ -274,7 +289,7 @@ export default {
       mask: true, // 显示透明蒙层，防止触摸穿透,
       success :res => {
         this.posts[this.category]=[]
-        this.getPosts("Replace")
+        this.getPosts()
         wx.hideLoading();
       }
     })
