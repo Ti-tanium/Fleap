@@ -12,7 +12,8 @@ CREATE TABLE post(
     sold VARCHAR(1)    COMMENT '是否售出' ,
     tag VARCHAR(32)    COMMENT '标签' ,
     textbookId VARCHAR(32)    COMMENT '教材ID' ,
-    location VARCHAR(32)    COMMENT '位置信息' ,
+    latitude DECIMAL(64,16)    COMMENT '维度' ,
+    longitude DECIMAL(64,16)    COMMENT '经度' ,
     PRIMARY KEY (id)
 ) COMMENT = '发布信息 ' CHARSET=utf8;
 

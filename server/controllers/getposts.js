@@ -1,6 +1,6 @@
 const { mysql } = require('../qcloud')
 module.exports = async ctx => {
-    const { category, count, start } = ctx.request.query
+    const { category, count, start, latitude, longitude } = ctx.request.query
 
     console.log(
         'requesting category:' +
@@ -29,6 +29,7 @@ module.exports = async ctx => {
                 .whereNotNull('location')
                 .limit(count)
                 .offset(0)
+
             posts = []
         } else if (category === 'recommend') {
             // TODO: recommendation algorithm needed

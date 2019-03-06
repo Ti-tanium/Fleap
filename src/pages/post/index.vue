@@ -183,7 +183,8 @@ export default {
         openId: userinfo.openId,
         images: this.uploadImageUrls.join(","),
         postTime: time,
-        location: latitude ? latitude + "," + longitude : ""
+        latitude: latitude ? latitude : null,
+        longitude: longitude ? longitude : null
       });
 
       console.log("post data:", this.postInfo);

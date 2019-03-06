@@ -9,13 +9,11 @@ module.exports = async ctx => {
         images,
         openId,
         postTime,
-        location
+        latitude,
+        longitude
     } = ctx.request.body
     const sold = false
     let viewCount = 0
-    if (location === '') {
-        location = null
-    }
     try {
         await mysql('post').insert({
             category,
@@ -27,7 +25,8 @@ module.exports = async ctx => {
             sold,
             postTime,
             viewCount,
-            location
+            latitude,
+            longitude
         })
         ctx.state.data = {
             msg: 'success'
