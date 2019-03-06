@@ -1,7 +1,7 @@
 const { mysql } = require('../qcloud')
 
 module.exports = async ctx => {
-    const {
+    var {
         category,
         price,
         title,
@@ -13,6 +13,9 @@ module.exports = async ctx => {
     } = ctx.request.body
     const sold = false
     let viewCount = 0
+    if (location === '') {
+        location = null
+    }
     try {
         await mysql('post').insert({
             category,
