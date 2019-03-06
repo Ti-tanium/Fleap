@@ -138,6 +138,7 @@ export default {
         carshare:0,
         other:0
       },
+      userinfo:{}
     }
   },
   onLoad () {
@@ -223,6 +224,11 @@ export default {
             }
           }
         });
+      }else if (this.category==="recommend"){
+        this.userinfo=wx.getStorageSync('userinfo');
+        if(!this.userinfo.openId){
+          showModal("提示","请先登录")
+        }
       }
       wx.showLoading({
         title: '加载中...', //提示的内容,
@@ -242,7 +248,8 @@ export default {
           count:this.CountPerGet,
           start:this.postCount[this.category],
           latitude:latitude?latitude:null,
-          longitude:longitude?longitude:null
+          longitude:longitude?longitude:null,
+          openId:this.userinfo.openId?this.userinfo.openId:null
       })
       const posts=response.data.posts;
       console.log("category:",this.category+".","posts:",this.posts[this.category]);

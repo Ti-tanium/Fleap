@@ -1,6 +1,13 @@
 const { mysql } = require('../qcloud')
 module.exports = async ctx => {
-    const { category, count, start, latitude, longitude } = ctx.request.query
+    const {
+        category,
+        count,
+        start,
+        latitude,
+        longitude,
+        openId
+    } = ctx.request.query
 
     console.log(
         'requesting category:' +
@@ -25,7 +32,6 @@ module.exports = async ctx => {
                 .offset(0)
             console.log(posts)
         } else if (category === 'near') {
-            // TODO: calculate distance select ?
             posts = await mysql('post')
                 .select()
                 .whereNotNull('latitude')
@@ -45,8 +51,18 @@ module.exports = async ctx => {
                 .limit(count)
                 .offset(parseInt(start))
         } else if (category === 'recommend') {
-            // TODO: recommendation algorithm needed
             posts = []
+            if (openId) {
+                const major = await mysql('user')
+                    .select('major')
+                    .where({ openId: openId })
+                posts = await mysql('post')
+                    .join('user', 'post.openId', '=', 'user.openId')
+                    .select('post.*')
+                    .where('user.major', major[0].major)
+                    .limit(count)
+                    .offset(parseInt(start))
+            }
         } else {
             const categorysql = await mysql('post_category')
                 .select('id')
