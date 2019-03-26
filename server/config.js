@@ -4,23 +4,23 @@ const CONF = {
     serverHost: 'localhost',
     tunnelServerUrl: '',
     tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
-  // 腾讯云相关配置可以查看云 API 秘钥控制台：https://console.cloud.tencent.com/capi
+    // 腾讯云相关配置可以查看云 API 秘钥控制台：https://console.cloud.tencent.com/capi
     qcloudAppId: '1257251040',
-    qcloudSecretId: 'AKIDeEwbzkJ1f8lK0cCPgyBIPQHzWzaQmtli',
-    qcloudSecretKey: 'YDkEhFpJhz7AylQ77HmLn9bwLPQJ22wK',
+    qcloudSecretId: 'AKIDKTN2Xo1sb5lDQRguIWcYK2axwgAPbAk4',
+    qcloudSecretKey: 'GMEsGPL1RdhT6VbWCjEagXEajeNuGVZS',
     wxMessageToken: 'weixinmsgtoken',
     networkTimeout: 30000,
-  // 微信小程序 App ID
+    // 微信小程序 App ID
     appId: 'wx77ceeae018c3f9bc',
-  // 微信小程序 App Secret
+    // 微信小程序 App Secret
     appSecret: '65acfb664179395a698cd59049ac08e6',
-  // 是否使用腾讯云代理登录小程序
+    // 是否使用腾讯云代理登录小程序
     useQcloudLogin: false,
-  /**
-   * MySQL 配置，用来存储 session 和用户信息
-   * 若使用了腾讯云微信小程序解决方案
-   * 开发环境下，MySQL 的初始密码为您的微信小程序 appid
-   */
+    /**
+     * MySQL 配置，用来存储 session 和用户信息
+     * 若使用了腾讯云微信小程序解决方案
+     * 开发环境下，MySQL 的初始密码为您的微信小程序 appid
+     */
     mysql: {
         host: 'localhost',
         port: 3306,
@@ -32,20 +32,19 @@ const CONF = {
     },
 
     cos: {
-    /**
-     * 地区简称
-     * @查看 https://cloud.tencent.com/document/product/436/6224
-     */
+        /**
+         * 地区简称
+         * @查看 https://cloud.tencent.com/document/product/436/6224
+         */
         region: 'ap-guangzhou',
-    // Bucket 名称
+        // Bucket 名称
         fileBucket: 'qcloudtest',
-    // 文件夹
+        // 文件夹
         uploadFolder: ''
     },
 
-  // 微信登录态有效期
+    // 微信登录态有效期
     wxLoginExpires: 7200
-
 }
 
 module.exports = CONF
