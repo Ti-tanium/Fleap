@@ -1,7 +1,8 @@
 const { mysql } = require('../qcloud')
 
 module.exports = async ctx => {
-    var keywords = ctx.request.query
+    var keywords = ctx.request.query.keywords
+    console.log('keywords:' + keywords)
     try {
         const posts = await mysql('post')
             .select()

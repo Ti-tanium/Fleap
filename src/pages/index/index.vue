@@ -163,8 +163,11 @@ export default {
     wx.stopPullDownRefresh();
   },
   methods: {
-    onSearch(){
-      //TODO:search code
+    async onSearch(){
+      console.log("keywords:"+this.keywords)
+      const response = await get(config.searchUrl,{keywords:this.keywords})
+      const posts=response.data.posts
+      console.log("search results:"+posts)
     },
     async onTabChange(e){
       this.activeTabIndex=e.target.index;
