@@ -1,6 +1,6 @@
 {
-  "navigationBarTitleText": "Fleap",
-  "usingComponents":{
-    "van-tag":"/static/vant/tag/index"
+  "navigationBarTitleText": "详情",
+  "usingComponents": {
+    "van-tag": "/static/vant/tag/index"
   }
 }
