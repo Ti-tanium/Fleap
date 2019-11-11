@@ -38,66 +38,66 @@
 </template>
 
 <script>
-import SplitLine from "@/components/SplitLine";
-import { showSuccess, showModal, post } from "@/utils/index";
-import config from "@/config";
+import SplitLine from '@/components/SplitLine';
+import { showSuccess, showModal, post } from '@/utils/index';
+import config from '@/config';
 export default {
   components: {
     SplitLine
   },
-  props: ["postList", "complete", "location"],
-  data() {
+  props: ['postList', 'complete', 'location'],
+  data () {
     return {
-      images: this.postList.images ? this.postList.images.split(",") : "",
-      sold: this.postList.sold === "0" ? false : true
-    };
+      images: this.postList.images ? this.postList.images.split(',') : '',
+      sold: this.postList.sold !== "0"
+    }
   },
   computed: {
-    postDetailUrl() {
-      return "/pages/postDetail/main?id=" + this.postList.id;
+    postDetailUrl () {
+      return '/pages/postDetail/main?id=' + this.postList.id
     }
   },
   methods: {
-    onComplete() {
-      var that = this;
+    onComplete () {
+      var that = this
       wx.showModal({
-        title: "提示", //提示的标题,
-        content: "完成交易，将从系统中删除此条发布信息", //提示的内容,
-        showCancel: true, //是否显示取消按钮,
-        cancelText: "取消", //取消按钮的文字，默认为取消，最多 4 个字符,
-        cancelColor: "#000000", //取消按钮的文字颜色,
-        confirmText: "确定", //确定按钮的文字，默认为取消，最多 4 个字符,
-        confirmColor: "#3CC51F", //确定按钮的文字颜色,
-        success(res) {
+        title: '提示', // 提示的标题,
+        content: '完成交易，将从系统中删除此条发布信息', // 提示的内容,
+        showCancel: true, // 是否显示取消按钮,
+        cancelText: '取消', // 取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', // 取消按钮的文字颜色,
+        confirmText: '确定', // 确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#3CC51F', // 确定按钮的文字颜色,
+        success (res) {
           if (res.confirm) {
             wx.request({
-              url: config.soldUrl, //开发者服务器接口地址",
+              url: config.soldUrl, // 开发者服务器接口地址",
               data: { id: that.postList.id },
-              method: "POST",
-              dataType: "json", //如果设为json，会尝试对返回的数据做一次 JSON.parse
+              method: 'POST',
+              dataType: 'json', // 如果设为json，会尝试对返回的数据做一次 JSON.parse
               success: res => {
-                that.sold = true;
-                showSuccess("交易完成");
+                that.sold = true
+                showSuccess('交易完成')
               },
               fail: () => {
-                showModal("提示", "网络错误");
+                showModal('提示', '网络错误')
               },
               complete: () => {}
-            });
+            })
           } else if (res.cancel) {
-            that.sold = false;
+            that.sold = false
           }
         }
-      });
+      })
     },
-    previewImage(image, index) {
+    previewImage (image, index) {
       wx.previewImage({
         urls: this.images, // 需要预览的图片链接列表,
         current: this.images[index]
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style>

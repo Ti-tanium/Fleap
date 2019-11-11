@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { get,id2Category,showModal,showSuccess } from '@/utils/index'
+import { get, id2Category, showModal, showSuccess } from '@/utils/index'
 import config from '@/config'
 import displayCell from '@/components/displayCell'
 import SplitLine from '@/components/SplitLine'
@@ -45,23 +45,23 @@ export default {
       itemId: '',
       postDetail: {},
       pictures: [],
-      collected:false
+      collected: false
     }
   },
   components: {
     displayCell
   },
-  computed:{
-    category(){
-      return id2Category(this.postDetail.category);
+  computed: {
+    category () {
+      return id2Category(this.postDetail.category)
     }
   },
   mounted () {
     this.itemId = this.$root.$mp.query.id
     this.getPostDetail()
   },
-  onLoad(){
-    Object.assign(this, this.$options.data());
+  onLoad () {
+    Object.assign(this, this.$options.data())
   },
   onShareAppMessage () {
     return {
@@ -75,23 +75,23 @@ export default {
   methods: {
     async getPostDetail () {
       // acquire openid for view history data
-      const userinfo=wx.getStorageSync('userinfo');
-      const openId=userinfo.openId;
+      const userinfo = wx.getStorageSync('userinfo')
+      const openId = userinfo.openId
       const postDetail = await get(config.host + '/weapp/postdetail', {
         itemId: this.itemId,
         openId: openId
       })
-      this.postDetail = postDetail.data;
+      this.postDetail = postDetail.data
       this.pictures = this.postDetail.images.split(',')
       console.log('get post detail of id=' + this.itemId)
       console.log('post detail:', this.postDetail)
 
       // get collect record
-      if(openId){
-        const response=await get(config.collectUrl,{openId:openId,id:this.postDetail.id,action:"query"})
+      if (openId) {
+        const response = await get(config.collectUrl, {openId: openId, id: this.postDetail.id, action: 'query'})
         console.log(response)
-        const collected=response.data.collected
-        this.collected=collected;
+        const collected = response.data.collected
+        this.collected = collected
       }
     },
     previewImage (image, index) {
@@ -100,31 +100,30 @@ export default {
         current: this.pictures[index]
       })
     },
-    async onCollect(){
+    async onCollect () {
       // check openId
-      const userinfo=wx.getStorageSync('userinfo');
-      const openId=userinfo.openId
-      if(!openId){
-        showModal("提示","请先登录")
-        return;
+      const userinfo = wx.getStorageSync('userinfo')
+      const openId = userinfo.openId
+      if (!openId) {
+        showModal('提示', '请先登录')
+        return
       }
 
-      
-      if(this.collected){
-        this.collected=false;
-        const response=await get(config.collectUrl,{openId:openId,id:this.postDetail.id,action:"discollect"})
-        if(response.code===0){
-          showSuccess("取消成功")
-        }else{
-          showModal("错误",'请检查网络状态')
+      if (this.collected) {
+        this.collected = false
+        const response = await get(config.collectUrl, {openId: openId, id: this.postDetail.id, action: 'discollect'})
+        if (response.code === 0) {
+          showSuccess('取消成功')
+        }else {
+          showModal('错误', '请检查网络状态')
         }
-      }else{
-        this.collected=true;
-        const response=await get(config.collectUrl,{openId:openId,id:this.postDetail.id,action:"collect"})
-        if(response.code===0){
-          showSuccess("收藏成功")
-        }else{
-          showModal("错误",'请检查网络状态')
+      }else {
+        this.collected = true
+        const response = await get(config.collectUrl, {openId: openId, id: this.postDetail.id, action: 'collect'})
+        if (response.code === 0) {
+          showSuccess('收藏成功')
+        }else {
+          showModal('错误', '请检查网络状态')
         }
       }
     }

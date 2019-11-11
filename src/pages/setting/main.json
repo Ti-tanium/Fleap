@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "设置"
+  "navigationBarTitleText": "设置",
+  "usingComponents": {
+    "van-field": "/static/vant/field/index"
+  }
 }

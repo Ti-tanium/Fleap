@@ -109,194 +109,193 @@ export default {
         '/static/images/csu/csu3.jpg'
       ],
       category: 'new',
-      activeTabIndex:'',
-      postList:{
+      activeTabIndex: '',
+      postList: {
       },
-      keywords:'',
+      keywords: '',
       posts: {
-        new:[],
-        near:[],
-        recommend:[],
-        textbook:[],
-        dailyuse:[],
-        electronics:[],
-        plant:[],
-        clothes:[],
-        carshare:[],
-        other:[]
+        new: [],
+        near: [],
+        recommend: [],
+        textbook: [],
+        dailyuse: [],
+        electronics: [],
+        plant: [],
+        clothes: [],
+        carshare: [],
+        other: []
       },
-      CountPerGet:20,
-      postCount:{
-        new:0,
-        near:0,
-        recommend:0,
-        textbook:0,
-        dailyuse:0,
-        electronics:0,
-        plant:0,
-        clothes:0,
-        carshare:0,
-        other:0
+      CountPerGet: 20,
+      postCount: {
+        new: 0,
+        near: 0,
+        recommend: 0,
+        textbook: 0,
+        dailyuse: 0,
+        electronics: 0,
+        plant: 0,
+        clothes: 0,
+        carshare: 0,
+        other: 0
       },
-      userinfo:{}
+      userinfo: {}
     }
   },
   onLoad () {
-    console.log("index loaded");
+    console.log('index loaded')
     wx.showLoading({
       title: '加载中...', // 提示的内容,
       mask: true, // 显示透明蒙层，防止触摸穿透,
       success: res => {}
     })
     this.getPosts()
-    wx.hideLoading();
+    wx.hideLoading()
   },
-  onReachBottom(){
-    console.log("scroll lower tricked.")
-    wx.showLoading({
-      title: '加载中...', //提示的内容,
-      mask: true, //显示透明蒙层，防止触摸穿透,
-      success: res => {}
-    });
-    this.loadmore()
-    wx.hideLoading();
-    wx.stopPullDownRefresh();
-  },
-  methods: {
-    async onSearch(){
-      console.log("keywords:"+this.keywords)
-      const response = await get(config.searchUrl,{keywords:this.keywords})
-      const posts=response.data.posts
-      console.log("search results:"+posts)
-    },
-    async onTabChange(e){
-      this.activeTabIndex=e.target.index;
-      switch(this.activeTabIndex){
-        case 0:
-        this.category="new"
-        break;
-        case 1:
-        this.category="near"
-        break;
-        case 2:
-        this.category="recommend"
-        break;
-        case 3:
-        this.category="textbook"
-        break;
-        case 4:
-        this.category="dailyuse"
-        break;
-        case 5:
-        this.category="electronics"
-        break;
-        case 6:
-        this.category="plant"
-        break;
-        case 7:
-        this.category="clothes"
-        break;
-        case 8:
-        this.category="carshare"
-        break;
-        case 9:
-        this.category="other"
-        break;
-      }
-      if(this.category==="near"){
-        wx.getSetting({
-          success(res) {
-            if (!res.authSetting["scope.userLocation"]) {
-              wx.authorize({
-                scope: "scope.userLocation",
-                success() {
-                  //同意获取地理位置
-                  wx.getLocation({
-                    type: "wgs84",
-                    success(res) {
-                      wx.setStorageSync("latitude", res.latitude);
-                      wx.setStorageSync("longitude", res.longitude);
-                    }
-                  });
-                },
-                fail() {
-                  console.log("failed to get location information");
-                  showModal("提示","查看附近信息需要进行地理位置授权")
-                  wx.hideLoading();
-                }
-              });
-            }
-          }
-        });
-      }else if (this.category==="recommend"){
-        this.userinfo=wx.getStorageSync('userinfo');
-        if(!this.userinfo.openId){
-          showModal("提示","请先登录")
-        }
-      }
-      wx.showLoading({
-        title: '加载中...', //提示的内容,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
-      if(this.postCount[this.category]===0){
-        await this.getPosts();
-      }
-      wx.hideLoading();
-    },
-    async getPosts(){
-      const latitude = wx.getStorageSync('latitude');
-      const longitude = wx.getStorageSync('longitude');
-      const response=await get(config.getPostsUrl,{
-          category:this.category,
-          count:this.CountPerGet,
-          start:0,
-          latitude:latitude?latitude:null,
-          longitude:longitude?longitude:null,
-          openId:this.userinfo.openId?this.userinfo.openId:null
-      })
-      const posts=response.data.posts;
-      console.log("category:",this.category+".","posts:",this.posts[this.category]);
-      console.log("post count before:",this.postCount[this.category])
-      this.posts[this.category]=posts;
-      this.postCount[this.category]=posts.length;
-      console.log("post count after:",this.postCount[this.category])
-      wx.hideLoading();
-      wx.stopPullDownRefresh();
-    },
-    async loadmore(){
-      const latitude = wx.getStorageSync('latitude');
-      const longitude = wx.getStorageSync('longitude');
-      const response=await get(config.getPostsUrl,{
-          category:this.category,
-          count:this.CountPerGet,
-          start:this.postCount[this.category],
-          latitude:latitude?latitude:null,
-          longitude:longitude?longitude:null,
-          openId:this.userinfo.openId?this.userinfo.openId:null
-      })
-      const posts=response.data.posts;
-      console.log("category:",this.category+".","posts:",this.posts[this.category]);
-      console.log("post count before:",this.postCount[this.category])
-      this.posts[this.category]=this.posts[this.category].concat(posts);
-      this.postCount[this.category]+=posts.length;
-      console.log("post count after:",this.postCount[this.category])
-      wx.hideLoading();
-      wx.stopPullDownRefresh();
-    }
-  },
-  onPullDownRefresh () {
-    var that=this;
+  onReachBottom () {
+    console.log('scroll lower tricked.')
     wx.showLoading({
       title: '加载中...', // 提示的内容,
       mask: true, // 显示透明蒙层，防止触摸穿透,
-      success :res => {
-        this.posts[this.category]=[]
+      success: res => {}
+    })
+    this.loadmore()
+    wx.hideLoading()
+    wx.stopPullDownRefresh()
+  },
+  methods: {
+    async onSearch () {
+      console.log('keywords:' + this.keywords)
+      const response = await get(config.searchUrl, {keywords: this.keywords})
+      const posts = response.data.posts
+      console.log('search results:' + posts)
+    },
+    async onTabChange (e) {
+      this.activeTabIndex = e.target.index
+      switch (this.activeTabIndex) {
+        case 0:
+          this.category = 'new'
+          break
+        case 1:
+          this.category = 'near'
+          break
+        case 2:
+          this.category = 'recommend'
+          break
+        case 3:
+          this.category = 'textbook'
+          break
+        case 4:
+          this.category = 'dailyuse'
+          break
+        case 5:
+          this.category = 'electronics'
+          break
+        case 6:
+          this.category = 'plant'
+          break
+        case 7:
+          this.category = 'clothes'
+          break
+        case 8:
+          this.category = 'carshare'
+          break
+        case 9:
+          this.category = 'other'
+          break
+      }
+      if (this.category === 'near') {
+        wx.getSetting({
+          success (res) {
+            if (!res.authSetting['scope.userLocation']) {
+              wx.authorize({
+                scope: 'scope.userLocation',
+                success () {
+                  // 同意获取地理位置
+                  wx.getLocation({
+                    type: 'wgs84',
+                    success (res) {
+                      wx.setStorageSync('latitude', res.latitude)
+                      wx.setStorageSync('longitude', res.longitude)
+                    }
+                  })
+                },
+                fail () {
+                  console.log('failed to get location information')
+                  showModal('提示', '查看附近信息需要进行地理位置授权')
+                  wx.hideLoading()
+                }
+              })
+            }
+          }
+        })
+      } else if (this.category === 'recommend') {
+        this.userinfo = wx.getStorageSync('userinfo')
+        if (!this.userinfo.openId) {
+          showModal('提示', '请先登录')
+        }
+      }
+      wx.showLoading({
+        title: '加载中...', // 提示的内容,
+        mask: true, // 显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      })
+      if (this.postCount[this.category] === 0) {
+        await this.getPosts()
+      }
+      wx.hideLoading()
+    },
+    async getPosts () {
+      const latitude = wx.getStorageSync('latitude')
+      const longitude = wx.getStorageSync('longitude')
+      const response = await get(config.getPostsUrl, {
+        category: this.category,
+        count: this.CountPerGet,
+        start: 0,
+        latitude: latitude || null,
+        longitude: longitude || null,
+        openId: this.userinfo.openId ? this.userinfo.openId : null
+      })
+      const posts = response.data.posts
+      console.log('category:', this.category + '.', 'posts:', this.posts[this.category])
+      console.log('post count before:', this.postCount[this.category])
+      this.posts[this.category] = posts
+      this.postCount[this.category] = posts.length
+      console.log('post count after:', this.postCount[this.category])
+      wx.hideLoading()
+      wx.stopPullDownRefresh()
+    },
+    async loadmore () {
+      const latitude = wx.getStorageSync('latitude')
+      const longitude = wx.getStorageSync('longitude')
+      const response = await get(config.getPostsUrl, {
+        category: this.category,
+        count: this.CountPerGet,
+        start: this.postCount[this.category],
+        latitude: latitude || null,
+        longitude: longitude || null,
+        openId: this.userinfo.openId ? this.userinfo.openId : null
+      })
+      const posts = response.data.posts
+      console.log('category:', this.category + '.', 'posts:', this.posts[this.category])
+      console.log('post count before:', this.postCount[this.category])
+      this.posts[this.category] = this.posts[this.category].concat(posts)
+      this.postCount[this.category] += posts.length
+      console.log('post count after:', this.postCount[this.category])
+      wx.hideLoading()
+      wx.stopPullDownRefresh()
+    }
+  },
+  onPullDownRefresh () {
+    var that = this
+    wx.showLoading({
+      title: '加载中...', // 提示的内容,
+      mask: true, // 显示透明蒙层，防止触摸穿透,
+      success: res => {
+        this.posts[this.category] = []
         this.getPosts()
-        wx.hideLoading();
+        wx.hideLoading()
       }
     })
-
   },
   onShareAppMessage () {
     return {

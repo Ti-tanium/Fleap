@@ -63,218 +63,218 @@ import {
   showSuccess,
   formatTime,
   numberValidate
-} from "@/utils/index";
-import config from "@/config";
+} from '@/utils/index'
+import config from '@/config'
 export default {
-  data() {
+  data () {
     return {
-      sizeType: ["compressed"],
+      sizeType: ['compressed'],
       postInfo: {},
-      detail: "",
-      detailErrorMessage: "",
-      title: "",
-      titleErrorMessage: "",
-      price: "",
-      priceErrorMessage: "",
-      category: "",
+      detail: '',
+      detailErrorMessage: '',
+      title: '',
+      titleErrorMessage: '',
+      price: '',
+      priceErrorMessage: '',
+      category: '',
       uploadImageUrls: [],
       fileList: [],
       options: [
-        "教辅资料",
-        "日常用品",
-        "电子产品",
-        "盆栽",
-        "服装",
-        "拼车",
-        "其他"
+        '教辅资料',
+        '日常用品',
+        '电子产品',
+        '盆栽',
+        '服装',
+        '拼车',
+        '其他'
       ],
-      pickerIndex: "",
-      imageUrl: ""
-    };
-  },
-  computed: {
-    getUploadUrl() {
-      return config.uploadUrl;
+      pickerIndex: '',
+      imageUrl: ''
     }
   },
-  onLoad() {
-    console.log("post page loaded");
+  computed: {
+    getUploadUrl () {
+      return config.uploadUrl
+    }
+  },
+  onLoad () {
+    console.log('post page loaded')
     wx.getSetting({
-      success(res) {
-        if (!res.authSetting["scope.userLocation"]) {
+      success (res) {
+        if (!res.authSetting['scope.userLocation']) {
           wx.authorize({
-            scope: "scope.userLocation",
-            success() {
-              //同意获取地理位置
+            scope: 'scope.userLocation',
+            success () {
+              // 同意获取地理位置
               wx.getLocation({
-                type: "wgs84",
-                success(res) {
-                  wx.setStorageSync("latitude", res.latitude);
-                  wx.setStorageSync("longitude", res.longitude);
+                type: 'wgs84',
+                success (res) {
+                  wx.setStorageSync('latitude', res.latitude)
+                  wx.setStorageSync('longitude', res.longitude)
                 }
-              });
+              })
             },
-            fail() {
-              console.log("failed to get location information");
+            fail () {
+              console.log('failed to get location information')
             }
-          });
+          })
         }
       }
-    });
+    })
   },
-  onShow() {
-    const userinfo = wx.getStorageSync("userinfo");
+  onShow () {
+    const userinfo = wx.getStorageSync('userinfo')
     if (!userinfo.openId) {
-      showModal("提示", "请先登录");
+      showModal('提示', '请先登录')
     } else if (!userinfo.phone || !userinfo.QQId) {
-      showModal("提示", "请先完善信息");
+      showModal('提示', '请先完善信息')
     }
   },
   methods: {
-    bindPickerChange(e) {
-      console.log(e);
-      this.pickerIndex = e.target.value;
-      this.category = this.options[this.pickerIndex];
+    bindPickerChange (e) {
+      console.log(e)
+      this.pickerIndex = e.target.value
+      this.category = this.options[this.pickerIndex]
     },
-    checkFormInfo(formInfo) {
+    checkFormInfo (formInfo) {
       if (!formInfo.category) {
-        showModal("信息不完全", "请选择商品类别");
-        wx.hideLoading();
-        return false;
+        showModal('信息不完全', '请选择商品类别')
+        wx.hideLoading()
+        return false
       } else if (!formInfo.price) {
-        showModal("信息不完全", "请填写商品价格");
-        wx.hideLoading();
-        return false;
+        showModal('信息不完全', '请填写商品价格')
+        wx.hideLoading()
+        return false
       } else if (!formInfo.title) {
-        showModal("信息不完全", "请填写标题");
-        wx.hideLoading();
-        return false;
+        showModal('信息不完全', '请填写标题')
+        wx.hideLoading()
+        return false
       } else if (!formInfo.detail) {
-        showModal("信息不完全", "请填写详细描述");
-        wx.hideLoading();
-        return false;
+        showModal('信息不完全', '请填写详细描述')
+        wx.hideLoading()
+        return false
       }
-      return true;
+      return true
     },
-    formReset() {
-      this.price = "";
-      this.title = "";
-      this.detail = "";
-      this.category = "";
-      //TODO: cannot remove preview picture(thumb picture)
-      this.fileList = [];
-      this.uploadImageUrls = [];
-      console.log("reset form and picture");
+    formReset () {
+      this.price = ''
+      this.title = ''
+      this.detail = ''
+      this.category = ''
+      // TODO: cannot remove preview picture(thumb picture)
+      this.fileList = []
+      this.uploadImageUrls = []
+      console.log('reset form and picture')
     },
-    async formSubmit(e) {
-      const that = this;
-      const userinfo = wx.getStorageSync("userinfo");
+    async formSubmit (e) {
+      const that = this
+      const userinfo = wx.getStorageSync('userinfo')
       if (!userinfo.openId) {
-        showModal("提示", "请先登录");
-        return;
+        showModal('提示', '请先登录')
+        return
       } else if (!userinfo.phone || !userinfo.QQId) {
-        showModal("提示", "请先完善信息");
-        return;
+        showModal('提示', '请先完善信息')
+        return
       }
 
-      var formInfo = e.target.value;
-      //将category的ID和服务器的ID对应起来
-      formInfo.category = parseInt(formInfo.category) + 1;
-      const time = formatTime(new Date());
+      var formInfo = e.target.value
+      // 将category的ID和服务器的ID对应起来
+      formInfo.category = parseInt(formInfo.category) + 1
+      const time = formatTime(new Date())
 
       wx.showLoading({
-        title: "上传中...", // 提示的内容,
+        title: '上传中...', // 提示的内容,
         mask: true, // 显示透明蒙层，防止触摸穿透,
         success: res => {}
-      });
+      })
 
       // check form information not null
       if (!this.checkFormInfo(formInfo)) {
-        console.log("Form information not complete.");
-        return;
+        console.log('Form information not complete.')
+        return
       }
 
       // get location
-      const latitude = wx.getStorageSync("latitude");
-      const longitude = wx.getStorageSync("longitude");
-      console.log("latitude:", latitude, "longitude:", longitude);
+      const latitude = wx.getStorageSync('latitude')
+      const longitude = wx.getStorageSync('longitude')
+      console.log('latitude:', latitude, 'longitude:', longitude)
 
       Object.assign(this.postInfo, formInfo, {
         openId: userinfo.openId,
-        images: this.uploadImageUrls.join(","),
+        images: this.uploadImageUrls.join(','),
         postTime: time,
-        latitude: latitude ? latitude : null,
-        longitude: longitude ? longitude : null
-      });
+        latitude: latitude || null,
+        longitude: longitude || null
+      })
 
-      console.log("post data:", this.postInfo);
+      console.log('post data:', this.postInfo)
       try {
-        await post(config.host + "/weapp/post", this.postInfo);
-        this.uploadPictures = [];
-        showSuccess("发布成功");
-        this.formReset();
+        await post(config.host + '/weapp/post', this.postInfo)
+        this.uploadPictures = []
+        showSuccess('发布成功')
+        this.formReset()
       } catch (e) {
-        console.log(e);
-        showModal("发布失败", "请检查您的网络状态");
+        console.log(e)
+        showModal('发布失败', '请检查您的网络状态')
       }
     },
-    onPriceConfirm(event) {
-      const price = event.mp.detail;
-      console.log("price is number?", numberValidate(price));
+    onPriceConfirm (event) {
+      const price = event.mp.detail
+      console.log('price is number?', numberValidate(price))
       if (!numberValidate(price)) {
-        this.priceErrorMessage = "请输入正确的价格";
+        this.priceErrorMessage = '请输入正确的价格'
       } else {
-        this.priceErrorMessage = "";
+        this.priceErrorMessage = ''
       }
     },
-    onTitleChange(event) {
-      const title = event.mp.detail;
-      console.log("title is over 20 character?", title.length > 20);
+    onTitleChange (event) {
+      const title = event.mp.detail
+      console.log('title is over 20 character?', title.length > 20)
       if (title.length > 20) {
-        this.titleErrorMessage = "标题过长";
+        this.titleErrorMessage = '标题过长'
       } else {
-        this.titleErrorMessage = "";
+        this.titleErrorMessage = ''
       }
     },
-    onDetailChange(event) {
-      const detail = event.mp.detail;
-      console.log("detail is over 20 character?", detail.length > 20);
+    onDetailChange (event) {
+      const detail = event.mp.detail
+      console.log('detail is over 20 character?', detail.length > 20)
       if (detail.length > 200) {
-        this.titleErrorMessage = "标题过长";
+        this.titleErrorMessage = '标题过长'
       } else {
-        this.titleErrorMessage = "";
+        this.titleErrorMessage = ''
       }
     },
-    onSuccess(e) {
-      console.log("wux-upload onSuccess:", e);
+    onSuccess (e) {
+      console.log('wux-upload onSuccess:', e)
     },
-    onFail(e) {
-      console.log("upload onFail:", e);
+    onFail (e) {
+      console.log('upload onFail:', e)
     },
-    onComplete(e) {
-      console.log("upload onComplete:");
-      const datastr = e.target.data;
-      const imageUrl = JSON.parse(datastr).data.imgUrl;
-      console.log(imageUrl);
-      this.uploadImageUrls.push(imageUrl);
+    onComplete (e) {
+      console.log('upload onComplete:')
+      const datastr = e.target.data
+      const imageUrl = JSON.parse(datastr).data.imgUrl
+      console.log(imageUrl)
+      this.uploadImageUrls.push(imageUrl)
     },
-    onPreview(e) {
-      console.log("onPreview", e);
-      const { file, fileList } = e.target;
+    onPreview (e) {
+      console.log('onPreview', e)
+      const { file, fileList } = e.target
       wx.previewImage({
         current: file.url,
         urls: fileList.map(n => n.url)
-      });
+      })
     },
-    onRemove(e) {
-      console.log("onRemove");
-      console.log(e);
-      const { file, fileList, index } = e.target;
-      this.fileList = fileList.filter(n => n.uid !== file.uid);
-      this.uploadImageUrls.splice(index, 1);
+    onRemove (e) {
+      console.log('onRemove')
+      console.log(e)
+      const { file, fileList, index } = e.target
+      this.fileList = fileList.filter(n => n.uid !== file.uid)
+      this.uploadImageUrls.splice(index, 1)
     }
   }
-};
+}
 </script>
 
 <style>
