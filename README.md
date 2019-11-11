@@ -8,19 +8,19 @@ a WeChat miniprogram for second-hand sales and information posting on campus.
 
 # User-interface
 
-<img style="width:180px;height:360px;" src="/images/Home.png"></img>
-<img style="width:180px;height:360px;" src="/images/Detail.png"/>
-<img style="width:180px;height:360px;" src="/images/Post.png"/>
+<img height="480" width="270" src="/images/Home.png"></img>
+<img height="480" width="270" src="/images/Detail.png"></img>
+<img height="480" width="270" src="/images/Post.png"/>
+<img height="480" width="270" src="/images/Near.png"></img>
+<img height="480" width="270" src="/images/mypost.png"></img>
+<img height="480" width="270" src="/images/Profile.png"><img/>
 
-<img style="width:180px;height:360px;" src="/images/Near.png">
-<img style="width:180px;height:360px;" src="/images/mypost.png">
-<img style="width:180px;height:360px;" src="/images/Profile.png">
 
 # Database Design
-<img style="width:180px;height:360px;" src="/images/ER.png">
+<img src="/images/ER.png">
 
 # Framework
-<img style="width:180px;height:360px;" src="/images/framework.png">
+<img src="/images/framework.png">
 
 ## Build Setup
 
